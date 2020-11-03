@@ -10,3 +10,8 @@ Run webpack server
 ```sh
 npm run dev
 ```
+
+## TODO
+* Keyboard bindings: e.g bind undo to `CTRL+Z`
+* Efficient drawing
+* CSS
