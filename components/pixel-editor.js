@@ -27,6 +27,7 @@ export class PixelEditor {
   constructor(state, config) {
     let { tools, controls, dispatch } = config;
     this.state = state;
+    // pointer handler passed to Picture canvas calls currently selected tool with appropriate args
     this.canvas = new PictureCanvas(state.picture, (pos) => {
       let tool = tools[this.state.tool];
       let onMove = tool(pos, this.state, dispatch);
@@ -35,6 +36,7 @@ export class PixelEditor {
         return (pos) => onMove(pos, this.state);
       }
       this.controls = controls.map((Control) => new Control(state, config));
+      // the call to reduce introduces spaces between the control's DOM elements.
       this.dom = elt(
         "div",
         {},
@@ -45,11 +47,70 @@ export class PixelEditor {
     });
   }
 
+  /**
+   * Sync Pixel editor state
+   * @param {*} state
+   */
   syncState(state) {
     this.state = state;
     this.canvas.syncState(state.picture);
     for (let ctrl of this.controls) {
       ctrl.syncState(state);
     }
+  }
+}
+
+/**
+ * Tool select object
+ */
+export class ToolSelect {
+  constructor(state, { tools, dispatch }) {
+    this.select = elt(
+      "select",
+      {
+        onchange: () => dispatch({ tool: this.select.value }),
+      },
+      ...Object.keys(tools).map((name) =>
+        elt(
+          "option",
+          {
+            selected: name == state.tool,
+          },
+          name
+        )
+      )
+    );
+    this.dom = elt("label", null, "Tool: ", this.select);
+  }
+
+  /**
+   * Sync ToolSelect state
+   * @param {*} state
+   */
+  syncState(state) {
+    this.select.value = state.tool;
+  }
+}
+
+/**
+ * A color selector; basically a HTML `<input>` element with a `type`
+ * attribute of `color`
+ */
+export class ColorSelect {
+  constructor(state, { dispatch }) {
+    this.input = elt("input", {
+      type: "color",
+      value: state.color,
+      onchange: () => dispatch({ color: this.input.value }),
+    });
+    this.dom = elt("label", null, " Color: ", this.input);
+  }
+
+  /**
+   * Sync the ColorSelect state
+   * @param {*} state 
+   */
+  syncState(state) {
+    this.input.value = state.color;
   }
 }
