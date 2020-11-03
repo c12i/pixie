@@ -11,7 +11,7 @@
  * @param {*} state
  * @param {*} dispatch
  */
-function draw(pos, state, dispatch) {
+export function draw(pos, state, dispatch) {
   function drawPixel({ x, y }, state) {
     let drawn = { x, y, color: state.color };
     dispatch({ picture: state.picture.draw([drawn]) });
@@ -29,7 +29,7 @@ function draw(pos, state, dispatch) {
  * @param {*} state
  * @param {*} dispatch
  */
-function rectangle(start, state, dispatch) {
+export function rectangle(start, state, dispatch) {
   function drawRectangle(pos) {
     let xStart = Math.min(start.x, pos.x);
     let yStart = Math.min(start.y, pos.y);
@@ -64,7 +64,7 @@ const around = [
  * @param {*} state
  * @param {*} dispatch
  */
-function fill({ x, y }, state, dispatch) {
+export function fill({ x, y }, state, dispatch) {
   let targetColor = state.picture.pixel(x, y);
   let drawn = [{ x, y, color: state.color }];
   for (let done = 0; done < drawn.length; done++) {
@@ -92,6 +92,6 @@ function fill({ x, y }, state, dispatch) {
  * @param {*} state 
  * @param {*} dispatch 
  */
-function pick(pos, state, dispatch) {
+export function pick(pos, state, dispatch) {
   dispatch({ color: state.picture.pixel(pos.x, pos.y) });
 }

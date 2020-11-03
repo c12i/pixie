@@ -3,7 +3,7 @@
  * the width, height and pixel content.
  * The pixels are stored in an array.
  */
-class Picture {
+export class Picture {
   constructor(width, height, pixels) {
     this.width = width;
     this.height = height;
