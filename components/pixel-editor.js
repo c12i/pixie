@@ -108,7 +108,7 @@ export class ColorSelect {
 
   /**
    * Sync the ColorSelect state
-   * @param {*} state 
+   * @param {*} state
    */
   syncState(state) {
     this.input.value = state.color;
