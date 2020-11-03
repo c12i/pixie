@@ -40,8 +40,7 @@ function startPixelEditor({
       app.syncState(state);
     },
   });
-  console.log(app);
   return app.dom;
 }
 
-document.querySelector("div").appendChild(startPixelEditor({}))
+document.querySelector("div").appendChild(startPixelEditor({}));

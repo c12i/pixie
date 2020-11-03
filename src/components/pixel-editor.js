@@ -29,9 +29,10 @@ export class PixelEditor {
     this.state = state;
     // pointer handler passed to Picture canvas calls currently selected tool with appropriate args
     this.canvas = new PictureCanvas(state.picture, (pos) => {
+      // get tool function
       let tool = tools[this.state.tool];
+      // call tool function
       let onMove = tool(pos, this.state, dispatch);
-
       if (onMove) {
         return (pos) => onMove(pos, this.state);
       }
