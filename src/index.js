@@ -1,7 +1,7 @@
 import { draw, fill, pick, rectangle } from "./tools";
 import { Picture } from "./components/picture";
 import { LoadButton } from "./components/load-button";
-import { UndoButton } from "./components/undo-button";
+import { UndoButton, historyUpdateState } from "./components/undo-button";
 import { SaveButton } from "./components/save-button";
 import {
   ColorSelect,
@@ -40,6 +40,7 @@ function startPixelEditor({
       app.syncState(state);
     },
   });
+  console.log(app);
   return app.dom;
 }
 

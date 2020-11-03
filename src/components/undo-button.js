@@ -1,3 +1,5 @@
+import { elt } from "../utils";
+
 export function historyUpdateState(state, action) {
   if (action.undo == true) {
     if (state.done.length == 0) return state;
@@ -29,7 +31,7 @@ export class UndoButton {
   }
   /**
    * Sync `UndoButton` state
-   * @param {*} state 
+   * @param {*} state
    */
   syncState(state) {
     this.dom.disabled = state.done.length == 0;

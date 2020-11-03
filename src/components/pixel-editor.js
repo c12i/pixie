@@ -35,16 +35,16 @@ export class PixelEditor {
       if (onMove) {
         return (pos) => onMove(pos, this.state);
       }
-      this.controls = controls.map((Control) => new Control(state, config));
-      // the call to reduce introduces spaces between the control's DOM elements.
-      this.dom = elt(
-        "div",
-        {},
-        this.canvas.dom,
-        elt("br"),
-        ...this.controls.reduce((a, c) => a.concat(" ", c.dom), [])
-      );
     });
+    this.controls = controls.map((Control) => new Control(state, config));
+    // the call to reduce introduces spaces between the control's DOM elements.
+    this.dom = elt(
+      "div",
+      {},
+      this.canvas.dom,
+      elt("br"),
+      ...this.controls.reduce((a, c) => a.concat(" ", c.dom), [])
+    );
   }
 
   /**
