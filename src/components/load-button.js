@@ -1,4 +1,5 @@
 import { elt, hex } from "../utils";
+import { Picture } from "./picture";
 
 /**
  * Component responsible for loading existing image files into the app
