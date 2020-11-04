@@ -9,6 +9,7 @@ A pixel art editor purely built with vanilla JavaScript + canvas
     * Rectangle tool
     * Color picker
 * Save drawn image
+* Load image to editor (a bit wonky)
 * Undo action
 
 ## Usage
@@ -27,5 +28,7 @@ Eloquent JavaScript: A Modern Introduction to Programming
 ## TODO
 * Keyboard bindings: e.g bind undo to `CTRL+Z`
 * Efficient drawing
-* Correctly load images
+* Improve image loading
 * CSS
+
+This project is [MIT](LICENSE) licensed.
