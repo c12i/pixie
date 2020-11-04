@@ -29,6 +29,9 @@ function startLoad(dispatch) {
     type: "file",
     onchange: () => finishLoad(input.files[0], dispatch),
   });
+  document.body.appendChild(input);
+  input.click();
+  input.remove();
 }
 
 /**
@@ -62,7 +65,7 @@ function finishLoad(file, dispatch) {
  * The canvas context has a `getImageData` that allows a script to
  * read its pixels. So once the picture is on the canvas, we can get
  * its pixels and construct a `Picture` object.
- * 
+ *
  * See: *Eloquent JavaScript: A Modern Introduction to Programming* chapter 19 page 639
  * @param {*} image
  */
@@ -76,7 +79,7 @@ function pictureFromImage(image) {
   // this data property is an array of color components
   // contains 4 values which represent reg, green, blue and alpha (for transparency) of the pixel's color as 8 bit numbers (0-255)
   let { data } = ctx.getImageData(0, 0, width, height);
-  
+
   for (let i = 0; i < data.length; i += 4) {
     let [r, g, b] = data.slice(i, i + 3);
     pixels.push("#" + hex(r) + hex(g) + hex(b));
