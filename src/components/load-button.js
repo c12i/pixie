@@ -5,7 +5,7 @@ import { Picture } from "./picture";
  * Component responsible for loading existing image files into the app
  */
 export class LoadButton {
-  constructor(_, dispatch) {
+  constructor(_, { dispatch }) {
     this.dom = elt(
       "button",
       {
