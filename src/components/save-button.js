@@ -25,7 +25,7 @@ export class SaveButton {
    */
   save() {
     let canvas = elt("canvas");
-    drawPicture(this.picture, canvas, 1);
+    drawPicture(this.picture, canvas, 10);
     let link = elt("a", {
       href: canvas.toDataURL(),
       download: "pixel-art.png",
