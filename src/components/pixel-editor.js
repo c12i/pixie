@@ -104,7 +104,7 @@ export class ColorSelect {
       value: state.color,
       onchange: () => dispatch({ color: this.input.value }),
     });
-    this.dom = elt("label", null, " Color: ", this.input);
+    this.dom = elt("label", null, "🎨 Color: ", this.input);
   }
 
   /**
