@@ -43,4 +43,4 @@ function startPixelEditor({
   return app.dom;
 }
 
-document.querySelector("div").appendChild(startPixelEditor({}));
+document.querySelector("#root").appendChild(startPixelEditor({}));
