@@ -5,9 +5,9 @@
  */
 export class Picture {
   constructor(width, height, pixels) {
-    this.width = width;
-    this.height = height;
-    this.pixels = pixels;
+    this.width = width
+    this.height = height
+    this.pixels = pixels
   }
 
   /**
@@ -19,8 +19,8 @@ export class Picture {
    * @returns {Picture}
    */
   static empty(width, height, color) {
-    let pixels = new Array(width * height).fill(color);
-    return new Picture(width, height, pixels);
+    let pixels = new Array(width * height).fill(color)
+    return new Picture(width, height, pixels)
   }
 
   /**
@@ -29,7 +29,7 @@ export class Picture {
    * @param {*} y
    */
   pixel(x, y) {
-    return this.pixels[x + y * this.width];
+    return this.pixels[x + y * this.width]
   }
 
   /**
@@ -38,11 +38,11 @@ export class Picture {
    * @returns Picture
    */
   draw(pixels) {
-    let copy = this.pixels.slice();
+    let copy = this.pixels.slice()
     for (let { x, y, color } of pixels) {
-      copy[x + y * this.width] = color;
+      copy[x + y * this.width] = color
     }
-    return new Picture(this.width, this.height, copy);
+    return new Picture(this.width, this.height, copy)
   }
 }
 
@@ -55,14 +55,14 @@ export class Picture {
  * @param {number} scale
  */
 export function drawPicture(picture, canvas, scale) {
-  canvas.width = picture.width * scale;
-  canvas.height = picture.height * scale;
-  let ctx = canvas.getContext("2d");
+  canvas.width = picture.width * scale
+  canvas.height = picture.height * scale
+  let ctx = canvas.getContext('2d')
 
   for (let y = 0; y < picture.height; y++) {
     for (let x = 0; x < picture.width; x++) {
-      ctx.fillStyle = picture.pixel(x, y);
-      ctx.fillRect(x * scale, y * scale, scale, scale);
+      ctx.fillStyle = picture.pixel(x, y)
+      ctx.fillRect(x * scale, y * scale, scale, scale)
     }
   }
 }

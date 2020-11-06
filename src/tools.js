@@ -13,12 +13,12 @@
  */
 export function draw(pos, state, dispatch) {
   function drawPixel({ x, y }, state) {
-    let drawn = { x, y, color: state.color };
-    dispatch({ picture: state.picture.draw([drawn]) });
+    let drawn = { x, y, color: state.color }
+    dispatch({ picture: state.picture.draw([drawn]) })
   }
   // immediate call to drawPixel and a return call of the same function
-  drawPixel(pos, state);
-  return drawPixel;
+  drawPixel(pos, state)
+  return drawPixel
 }
 
 /**
@@ -31,20 +31,20 @@ export function draw(pos, state, dispatch) {
  */
 export function rectangle(start, state, dispatch) {
   function drawRectangle(pos) {
-    let xStart = Math.min(start.x, pos.x);
-    let yStart = Math.min(start.y, pos.y);
-    let xEnd = Math.max(start.x, pos.x);
-    let yEnd = Math.max(start.y, pos.y);
-    let drawn = [];
+    let xStart = Math.min(start.x, pos.x)
+    let yStart = Math.min(start.y, pos.y)
+    let xEnd = Math.max(start.x, pos.x)
+    let yEnd = Math.max(start.y, pos.y)
+    let drawn = []
     for (let y = yStart; y <= yEnd; y++) {
       for (let x = xStart; x <= xEnd; x++) {
-        drawn.push({ x, y, color: state.color });
+        drawn.push({ x, y, color: state.color })
       }
     }
-    dispatch({ picture: state.picture.draw(drawn) });
+    dispatch({ picture: state.picture.draw(drawn) })
   }
-  drawRectangle(start);
-  return drawRectangle;
+  drawRectangle(start)
+  return drawRectangle
 }
 
 const around = [
@@ -52,7 +52,7 @@ const around = [
   { dx: 1, dy: 0 },
   { dx: 0, dy: -1 },
   { dx: 0, dy: 1 },
-];
+]
 
 /**
  * Flood fill tool.
@@ -65,12 +65,13 @@ const around = [
  * @param {*} dispatch
  */
 export function fill({ x, y }, state, dispatch) {
-  let targetColor = state.picture.pixel(x, y);
-  let drawn = [{ x, y, color: state.color }];
+  let targetColor = state.picture.pixel(x, y)
+  let drawn = [{ x, y, color: state.color }]
   for (let done = 0; done < drawn.length; done++) {
     for (let { dx, dy } of around) {
+      // eslint-disable-next-line one-var
       let x = drawn[done].x + dx,
-        y = drawn[done].y + dy;
+        y = drawn[done].y + dy
       if (
         x >= 0 &&
         x < state.picture.width &&
@@ -79,19 +80,19 @@ export function fill({ x, y }, state, dispatch) {
         state.picture.pixel(x, y) == targetColor &&
         !drawn.some((p) => p.x == x && p.y == y)
       ) {
-        drawn.push({ x, y, color: state.color });
+        drawn.push({ x, y, color: state.color })
       }
     }
   }
-  dispatch({ picture: state.picture.draw(drawn) });
+  dispatch({ picture: state.picture.draw(drawn) })
 }
 
 /**
  * Color picker tool
- * @param {*} pos 
- * @param {*} state 
- * @param {*} dispatch 
+ * @param {*} pos
+ * @param {*} state
+ * @param {*} dispatch
  */
 export function pick(pos, state, dispatch) {
-  dispatch({ color: state.picture.pixel(pos.x, pos.y) });
+  dispatch({ color: state.picture.pixel(pos.x, pos.y) })
 }

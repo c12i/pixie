@@ -1,5 +1,5 @@
-import { PictureCanvas } from "./picture-canvas";
-import { elt } from "../utils";
+import { PictureCanvas } from './picture-canvas'
+import { elt } from '../utils'
 
 /**
  * This is the editor shell around a picture canvas with
@@ -25,27 +25,27 @@ export class PixelEditor {
    * They may return a move handler function that gets called with a new position and a current state when the pointer moves to a different pixel.
    */
   constructor(state, config) {
-    let { tools, controls, dispatch } = config;
-    this.state = state;
+    let { tools, controls, dispatch } = config
+    this.state = state
     // pointer handler passed to Picture canvas calls currently selected tool with appropriate args
     this.canvas = new PictureCanvas(state.picture, (pos) => {
       // get tool function
-      let tool = tools[this.state.tool];
+      let tool = tools[this.state.tool]
       // call tool function
-      let onMove = tool(pos, this.state, dispatch);
+      let onMove = tool(pos, this.state, dispatch)
       if (onMove) {
-        return (pos) => onMove(pos, this.state);
+        return (pos) => onMove(pos, this.state)
       }
-    });
-    this.controls = controls.map((Control) => new Control(state, config));
+    })
+    this.controls = controls.map((Control) => new Control(state, config))
     // the call to reduce introduces spaces between the control's DOM elements.
     this.dom = elt(
-      "div",
+      'div',
       {},
       this.canvas.dom,
-      elt("br"),
-      ...this.controls.reduce((a, c) => a.concat(" ", c.dom), [])
-    );
+      elt('br'),
+      ...this.controls.reduce((a, c) => a.concat(' ', c.dom), [])
+    )
   }
 
   /**
@@ -53,10 +53,10 @@ export class PixelEditor {
    * @param {*} state
    */
   syncState(state) {
-    this.state = state;
-    this.canvas.syncState(state.picture);
+    this.state = state
+    this.canvas.syncState(state.picture)
     for (let ctrl of this.controls) {
-      ctrl.syncState(state);
+      ctrl.syncState(state)
     }
   }
 }
@@ -67,21 +67,21 @@ export class PixelEditor {
 export class ToolSelect {
   constructor(state, { tools, dispatch }) {
     this.select = elt(
-      "select",
+      'select',
       {
         onchange: () => dispatch({ tool: this.select.value }),
       },
       ...Object.keys(tools).map((name) =>
         elt(
-          "option",
+          'option',
           {
             selected: name == state.tool,
           },
           name
         )
       )
-    );
-    this.dom = elt("label", null, "Tool: ", this.select);
+    )
+    this.dom = elt('label', null, 'Tool: ', this.select)
   }
 
   /**
@@ -89,7 +89,7 @@ export class ToolSelect {
    * @param {*} state
    */
   syncState(state) {
-    this.select.value = state.tool;
+    this.select.value = state.tool
   }
 }
 
@@ -99,12 +99,12 @@ export class ToolSelect {
  */
 export class ColorSelect {
   constructor(state, { dispatch }) {
-    this.input = elt("input", {
-      type: "color",
+    this.input = elt('input', {
+      type: 'color',
       value: state.color,
       onchange: () => dispatch({ color: this.input.value }),
-    });
-    this.dom = elt("label", null, "🎨 Color: ", this.input);
+    })
+    this.dom = elt('label', null, '🎨 Color: ', this.input)
   }
 
   /**
@@ -112,6 +112,6 @@ export class ColorSelect {
    * @param {*} state
    */
   syncState(state) {
-    this.input.value = state.color;
+    this.input.value = state.color
   }
 }

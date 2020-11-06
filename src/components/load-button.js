@@ -1,5 +1,5 @@
-import { elt, hex } from "../utils";
-import { Picture } from "./picture";
+import { elt, hex } from '../utils'
+import { Picture } from './picture'
 
 /**
  * Component responsible for loading existing image files into the app
@@ -7,18 +7,20 @@ import { Picture } from "./picture";
 export class LoadButton {
   constructor(_, { dispatch }) {
     this.dom = elt(
-      "button",
+      'button',
       {
         onclick: () => startLoad(dispatch),
       },
-      "📁 Load"
-    );
+      '📁 Load'
+    )
   }
 
   /**
    * TODO: implement
    */
-  syncState() {}
+  syncState() {
+    // unimplemented
+  }
 }
 
 /**
@@ -26,13 +28,13 @@ export class LoadButton {
  * @param {*} dispatch
  */
 function startLoad(dispatch) {
-  let input = elt("input", {
-    type: "file",
+  let input = elt('input', {
+    type: 'file',
     onchange: () => finishLoad(input.files[0], dispatch),
-  });
-  document.body.appendChild(input);
-  input.click();
-  input.remove();
+  })
+  document.body.appendChild(input)
+  input.click()
+  input.remove()
 }
 
 /**
@@ -45,18 +47,18 @@ function startLoad(dispatch) {
  * @param {*} dispatch
  */
 function finishLoad(file, dispatch) {
-  if (file == null) return;
-  let reader = new FileReader();
-  reader.addEventListener("load", () => {
-    let image = elt("img", {
+  if (file == null) return
+  let reader = new FileReader()
+  reader.addEventListener('load', () => {
+    let image = elt('img', {
       onload: () =>
         dispatch({
           picture: pictureFromImage(image),
         }),
       src: reader.result,
-    });
-  });
-  reader.readAsDataURL(file);
+    })
+  })
+  reader.readAsDataURL(file)
 }
 
 /**
@@ -71,19 +73,19 @@ function finishLoad(file, dispatch) {
  * @param {*} image
  */
 function pictureFromImage(image) {
-  let width = Math.min(100, image.width);
-  let height = Math.min(100, image.height);
-  let canvas = elt("canvas", { width, height });
-  let ctx = canvas.getContext("2d");
-  ctx.drawImage(image, 0, 0);
-  let pixels = [];
+  let width = Math.min(100, image.width)
+  let height = Math.min(100, image.height)
+  let canvas = elt('canvas', { width, height })
+  let ctx = canvas.getContext('2d')
+  ctx.drawImage(image, 0, 0)
+  let pixels = []
   // this data property is an array of color components
   // contains 4 values which represent reg, green, blue and alpha (for transparency) of the pixel's color as 8 bit numbers (0-255)
-  let { data } = ctx.getImageData(0, 0, width, height);
+  let { data } = ctx.getImageData(0, 0, width, height)
 
   for (let i = 0; i < data.length; i += 4) {
-    let [r, g, b] = data.slice(i, i + 3);
-    pixels.push("#" + hex(r) + hex(g) + hex(b));
+    let [r, g, b] = data.slice(i, i + 3)
+    pixels.push(`#${hex(r)}${hex(g)}${hex(b)}`)
   }
-  return new Picture(width, height, pixels);
+  return new Picture(width, height, pixels)
 }

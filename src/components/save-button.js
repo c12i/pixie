@@ -1,5 +1,5 @@
-import { elt } from "../utils";
-import { drawPicture } from "./picture";
+import { elt } from '../utils'
+import { drawPicture } from './picture'
 
 /**
  * Component for handling downloading of current picture as an image file.
@@ -8,14 +8,14 @@ import { drawPicture } from "./picture";
 
 export class SaveButton {
   constructor(state) {
-    this.picture = state.picture;
+    this.picture = state.picture
     this.dom = elt(
-      "button",
+      'button',
       {
         onclick: () => this.save(),
       },
-      "💾 Save"
-    );
+      '💾 Save'
+    )
   }
 
   /**
@@ -24,22 +24,22 @@ export class SaveButton {
    * This url contains the whole resource, very long but it allows us to create working links to arbitrary pictures from the browser
    */
   save() {
-    let canvas = elt("canvas");
-    drawPicture(this.picture, canvas, 10);
-    let link = elt("a", {
+    let canvas = elt('canvas')
+    drawPicture(this.picture, canvas, 10)
+    let link = elt('a', {
       href: canvas.toDataURL(),
-      download: "pixel-art.png",
-    });
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
+      download: 'pixel-art.png',
+    })
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
   }
 
   /**
    * Sync SaveButton state
-   * @param {*} state 
+   * @param {*} state
    */
   syncState(state) {
-    this.picture = state.picture;
+    this.picture = state.picture
   }
 }
