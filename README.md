@@ -4,8 +4,8 @@ A pixel art editor purely built with vanilla JavaScript + canvas
 
 App install:
 
-- [Mac](https://keybase.pub/collinsmuriuki/pixie/pixie-1.0.0.dmg)
-- [Windows](https://keybase.pub/collinsmuriuki/pixie/pixie%20Setup%201.0.0.exe)
+- [Mac](https://keybase.pub/collinsmuriuki/pixie/mac/pixie-1.0.0.dmg)
+- [Windows](https://keybase.pub/collinsmuriuki/pixie/windows/pixie%20Setup%201.0.0.exe)
 
 ## Features
 
