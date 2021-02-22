@@ -1,12 +1,12 @@
 {
-  "name": "pixel-art-editor",
+  "name": "pixie",
   "version": "1.0.0",
   "description": "A pixel art editor purely built with javascript + canvas",
-  "main": "index.js",
+  "main": "src/electron.js",
   "scripts": {
     "build": "webpack",
     "dev": "webpack serve",
-    "dev:electron": "electron src/main.js",
+    "dev:electron": "electron src/electron.js",
     "pack": "electron-builder --dir",
     "dist": "electron-builder -wml",
     "lint": "eslint .",
