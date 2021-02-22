@@ -1,4 +1,4 @@
-## Pixel art editor
+## Pixie
 
 A pixel art editor purely built with vanilla JavaScript + canvas
 

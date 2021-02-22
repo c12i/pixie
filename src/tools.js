@@ -1,15 +1,5 @@
-// implementing tools that will control the functionality of mouse
-// touch events on the canvas
-
 /**
- * The draw tool, which changes any pixel clicked on or tapped on
- * to the currently selected color
- * It dispatches an action that updates the picture to a version in
- * which the pointed-at pixel is given the currently selected color.
- *
- * @param {*} pos
- * @param {*} state
- * @param {*} dispatch
+ * The draw tool
  */
 export function draw(pos, state, dispatch) {
   function drawPixel({ x, y }, state) {
@@ -23,11 +13,6 @@ export function draw(pos, state, dispatch) {
 
 /**
  * To draw larger shapes, it can be useful to quickly create rectangles.
- * This tool draws a rectangle between the point at which a user starts
- * dragging and the point a user drags to
- * @param {*} start
- * @param {*} state
- * @param {*} dispatch
  */
 export function rectangle(start, state, dispatch) {
   function drawRectangle(pos) {
@@ -56,13 +41,6 @@ const around = [
 
 /**
  * Flood fill tool.
- * This tool fills the pixel under the pointer and all adjacent pixels that have the same color.
- * Adjacent means horizontally or vertically adjacent but not diagonally.
- *
- * Algorithm is borrowed from the book *Eloquent JavaScript: A Modern Introduction to Programming*
- * @param {*} param0
- * @param {*} state
- * @param {*} dispatch
  */
 export function fill({ x, y }, state, dispatch) {
   let targetColor = state.picture.pixel(x, y)
@@ -89,9 +67,6 @@ export function fill({ x, y }, state, dispatch) {
 
 /**
  * Color picker tool
- * @param {*} pos
- * @param {*} state
- * @param {*} dispatch
  */
 export function pick(pos, state, dispatch) {
   dispatch({ color: state.picture.pixel(pos.x, pos.y) })

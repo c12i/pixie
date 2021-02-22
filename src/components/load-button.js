@@ -1,9 +1,6 @@
 import { elt, hex } from '../utils'
 import { Picture } from './picture'
 
-/**
- * Component responsible for loading existing image files into the app
- */
 export class LoadButton {
   constructor(_, { dispatch }) {
     this.dom = elt(
@@ -15,9 +12,6 @@ export class LoadButton {
     )
   }
 
-  /**
-   * TODO: implement
-   */
   syncState() {
     // unimplemented
   }
@@ -61,17 +55,6 @@ function finishLoad(file, dispatch) {
   reader.readAsDataURL(file)
 }
 
-/**
- * Getting the pixels so as to create a Picture object.
- * To get pixel, we first draw the picture to a `<canvas>` element.
- *
- * The canvas context has a `getImageData` that allows a script to
- * read its pixels. So once the picture is on the canvas, we can get
- * its pixels and construct a `Picture` object.
- *
- * See: *Eloquent JavaScript: A Modern Introduction to Programming* chapter 19 page 639
- * @param {*} image
- */
 function pictureFromImage(image) {
   let width = Math.min(100, image.width)
   let height = Math.min(100, image.height)

@@ -33,10 +33,6 @@ export class UndoButton {
     )
   }
 
-  /**
-   * Sync `UndoButton` state
-   * @param {*} state
-   */
   syncState(state) {
     this.dom.disabled = state.done.length == 0
   }

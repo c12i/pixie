@@ -1,11 +1,10 @@
+import { PixelEditor } from './editor'
+import { ColorSelect, ToolSelect } from './controls'
 import { draw, fill, pick, rectangle } from './tools'
-import { Picture } from './components/picture'
-import { LoadButton } from './components/load-button'
-import { UndoButton, historyUpdateState } from './components/undo-button'
-import { SaveButton } from './components/save-button'
-import { ColorSelect, ToolSelect, PixelEditor } from './components/pixel-editor'
+import { Picture, LoadButton, SaveButton, UndoButton } from './components'
+import { historyUpdateState } from './components/undo-button'
 
-const startState = {
+const INITIAL_STATE = {
   tool: 'draw',
   color: '#000000',
   picture: Picture.empty(60, 30, '#f0f0f0'),
@@ -29,7 +28,7 @@ const baseControls = [
 ]
 
 function startPixelEditor({
-  state = startState,
+  state = INITIAL_STATE,
   tools = baseTools,
   controls = baseControls,
 }) {
@@ -44,4 +43,4 @@ function startPixelEditor({
   return app.dom
 }
 
-document.querySelector('#root').appendChild(startPixelEditor({}))
+document.getElementById('root').appendChild(startPixelEditor({}))
