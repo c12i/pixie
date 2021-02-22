@@ -17,7 +17,8 @@
     "appId": "tk.muriuki",
     "productName": "pixie",
     "directories": {
-      "buildResources": "resources"
+      "buildResources": "assets",
+      "output": "build"
     }
   },
   "repository": {
