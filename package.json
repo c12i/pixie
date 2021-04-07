@@ -8,7 +8,7 @@
     "dev": "webpack serve",
     "dev:electron": "electron src/electron.js",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder -wml",
+    "dist": "electron-builder -wm",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\""
