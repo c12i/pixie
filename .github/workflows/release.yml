@@ -3,7 +3,7 @@ name: electron release
 on:
   push:
     tags:
-      - '2.*'
+      - '1.*'
 
 jobs:
   dist:
