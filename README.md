@@ -28,7 +28,7 @@ Install webpack and webpack-dev-server
 npm install
 ```
 
-Run webpack server
+Run local server
 
 ```sh
 npm run dev

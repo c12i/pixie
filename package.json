@@ -4,8 +4,8 @@
   "description": "A pixel art editor purely built with javascript + canvas",
   "main": "src/electron.js",
   "scripts": {
-    "build": "webpack",
-    "dev": "webpack serve",
+    "dev": "parcel src/index.html",
+    "build": "parcel build src/index.html --public-url ./",
     "dev:electron": "electron src/electron.js",
     "pack": "electron-builder --dir",
     "dist": "electron-builder -wm",
@@ -43,10 +43,8 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.0.0",
-    "prettier": "^2.1.2",
-    "webpack": "^5.4.0",
-    "webpack-cli": "^4.1.0",
-    "webpack-dev-server": "^3.11.0"
+    "parcel-bundler": "^1.12.5",
+    "prettier": "^2.1.2"
   },
   "dependencies": {
     "electron-util": "^0.14.2"
