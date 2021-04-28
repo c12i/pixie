@@ -7,7 +7,7 @@ function createWindow() {
   window = new BrowserWindow({
     width: 600,
     height: 378,
-    resizable: false,
+    resizable: true,
     darkTheme: true,
     webPreferences: {
       nodeIntegration: false,
