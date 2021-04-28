@@ -1,14 +1,14 @@
 import { elt } from '../utils'
 
-export class UndoButton {
+export class RedoButton {
   constructor(state, { dispatch }) {
     this.dom = elt(
       'button',
       {
-        onclick: () => dispatch({ undo: true }),
+        onclick: () => dispatch({ redo: true }),
         disabled: state.done.length == 0,
       },
-      '⤴ Undo'
+      '⤵ Redo'
     )
   }
 
