@@ -1,8 +1,7 @@
-import { PixelEditor } from './editor'
+import { PixelEditor } from './app'
 import { ColorSelect, ToolSelect } from './controls'
 import { draw, fill, pick, rectangle } from './tools'
 import { Picture, LoadButton, SaveButton, UndoButton } from './components'
-import { historyUpdateState } from './components/undo-button'
 
 const INITIAL_STATE = {
   tool: 'draw',
@@ -26,6 +25,31 @@ const baseControls = [
   LoadButton,
   UndoButton,
 ]
+
+// quasi - reducer function
+function historyUpdateState(state, action) {
+  if (action.undo == true) {
+    if (state.done.length == 0) return state
+    return {
+      ...state,
+      picture: state.done[0],
+      done: state.done.slice(1),
+      doneAt: 0,
+    }
+  }
+
+  // TODO: Add re-do functionality
+
+  if (action.picture && state.doneAt < Date.now() - 1000) {
+    return {
+      ...state,
+      ...action,
+      done: [state.picture, ...state.done],
+      doneAt: Date.now(),
+    }
+  }
+  return { ...state, ...action }
+}
 
 function startPixelEditor({
   state = INITIAL_STATE,
