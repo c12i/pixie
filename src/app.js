@@ -22,6 +22,13 @@ export class PixelEditor {
       elt('br'),
       ...this.controls.reduce((a, c) => a.concat(' ', c.dom), [])
     )
+    document.addEventListener('keydown', (e) => {
+      e.preventDefault()
+      dispatch({
+        undo: (e.metaKey || e.ctrlKey) && e.code === 'KeyZ',
+        redo: (e.metaKey || e.ctrlKey) && e.code === 'KeyY',
+      })
+    })
   }
 
   syncState(state) {
