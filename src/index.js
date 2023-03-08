@@ -38,10 +38,10 @@ const baseControls = [
 function historyUpdateState(state, action) {
   if (action.undo) {
     if (state.done.length < 2) return state
-    let prev = state.done.shift()
+    let prev = state.done.pop()
     return {
       ...state,
-      picture: state.done[0],
+      picture: state.done[state.done.length - 1],
       done: [...state.done],
       prev: [...state.prev, prev],
       doneAt: 0,
@@ -54,7 +54,7 @@ function historyUpdateState(state, action) {
     return {
       ...state,
       picture,
-      done: [picture, ...state.done],
+      done: [...state.done, picture],
       prev: [...state.prev],
       doneAt: 0,
     }
@@ -64,7 +64,7 @@ function historyUpdateState(state, action) {
     return {
       ...state,
       ...action,
-      done: [state.picture, ...state.done],
+      done: [...state.done, state.picture],
       prev: [],
       doneAt: Date.now(),
     }
