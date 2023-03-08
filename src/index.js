@@ -9,7 +9,7 @@ import {
   ToolSelect,
   ColorSelect,
 } from './components'
-import {Picture} from './picture'
+import { Picture } from './picture'
 import { cached, getCachedState } from './utils'
 
 const INITIAL_STATE = {
