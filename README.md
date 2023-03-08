@@ -18,7 +18,7 @@ App install:
   - Color picker
 - Save drawn image as png
 - Load image to editor (a bit wonky)
-- Undo/ Redo action
+- Undo/ Redo action with keybinds (`ctrl/cmd + "z"` and `ctrl/cmd + "y"` respectively)
 - Local caching
 
 ## Usage
@@ -61,9 +61,7 @@ Eloquent JavaScript: A Modern Introduction to Programming
 
 ## TODO
 
-- Keyboard bindings: e.g bind undo to `CTRL+Z`
-- Efficient drawing
-- Improve image loading
-- CSS
+- Keyboard bindings: ctrl + s for saving
+- Canvas resizing
 
 This project is [MIT](LICENSE) licensed.
