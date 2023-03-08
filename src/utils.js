@@ -1,3 +1,5 @@
+import { Picture } from './components/picture'
+
 /**
  * Update object state
  */
@@ -29,4 +31,32 @@ export function elt(type, props, ...children) {
  */
 export function hex(n) {
   return n.toString(16).padStart(2, '0')
+}
+
+/**
+ * Cache data to local storage
+ */
+export function cached(data) {
+  localStorage.setItem('_state', JSON.stringify(data))
+  return data
+}
+
+/**
+ * Get cached state from local storage
+ */
+export function getCachedState() {
+  let state = JSON.parse(localStorage.getItem('_state'))
+  if (!state) return
+  state.done = state.done.map(
+    ({ width, height, pixels }) => new Picture(width, height, pixels)
+  )
+  state.redone = state.done.map(
+    ({ width, height, pixels }) => new Picture(width, height, pixels)
+  )
+  state.picture = new Picture(
+    state.picture.width,
+    state.picture.height,
+    state.picture.pixels
+  )
+  return state
 }

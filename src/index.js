@@ -8,6 +8,7 @@ import {
   UndoButton,
   RedoButton,
 } from './components'
+import { cached, getCachedState } from './utils'
 
 const INITIAL_STATE = {
   tool: 'draw',
@@ -41,29 +42,29 @@ function historyUpdateState(state, action) {
   if (action.undo) {
     if (state.done.length < 2) return state
     let redone = state.done.pop()
-    return {
+    return cached({
       ...state,
       picture: state.done[state.done.length - 1],
       done: [...state.done],
       redone: [...state.redone, redone],
       doneAt: 0,
-    }
+    })
   }
 
   if (action.redo) {
     if (state.redone.length < 1) return state
     let picture = state.redone.pop()
-    return {
+    return cached({
       ...state,
       picture,
       done: [...state.done, picture],
       redone: [...state.redone],
       doneAt: 0,
-    }
+    })
   }
 
   if (action.picture && state.doneAt < Date.now() - 1000) {
-    return {
+    return cached({
       ...state,
       ...action,
       done: [...state.done, state.picture],
@@ -71,13 +72,13 @@ function historyUpdateState(state, action) {
       // on regular picture action
       redone: [],
       doneAt: Date.now(),
-    }
+    })
   }
-  return { ...state, ...action }
+  return cached({ ...state, ...action })
 }
 
 function startPixelEditor({
-  state = INITIAL_STATE,
+  state = getCachedState() ?? INITIAL_STATE,
   tools = baseTools,
   controls = baseControls,
 }) {
