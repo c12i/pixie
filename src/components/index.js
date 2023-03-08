@@ -4,6 +4,7 @@ import { Picture } from './picture'
 import { SaveButton } from './save-button'
 import { UndoButton } from './undo-button'
 import { RedoButton } from './redo-button'
+import { ResetButton } from './reset-button'
 
 export {
   LoadButton,
@@ -12,4 +13,5 @@ export {
   SaveButton,
   UndoButton,
   RedoButton,
+  ResetButton,
 }

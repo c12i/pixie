@@ -7,6 +7,7 @@ import {
   SaveButton,
   UndoButton,
   RedoButton,
+  ResetButton,
 } from './components'
 import { cached, getCachedState } from './utils'
 
@@ -35,6 +36,7 @@ const baseControls = [
   LoadButton,
   UndoButton,
   RedoButton,
+  ResetButton,
 ]
 
 // quasi - reducer function
@@ -60,6 +62,16 @@ function historyUpdateState(state, action) {
       done: [...state.done, picture],
       redone: [...state.redone],
       doneAt: 0,
+    })
+  }
+
+  if (action.reset) {
+    let picture = Picture.empty(60, 30, '#f0f0f0')
+    return cached({
+      ...state,
+      picture,
+      done: [],
+      redone: [],
     })
   }
 
