@@ -290,7 +290,7 @@ function getCachedState() {
         pixels = _ref.pixels;
     return new _picture.Picture(width, height, pixels);
   });
-  state.redone = state.done.map(function (_ref2) {
+  state.redone = state.redone.map(function (_ref2) {
     var width = _ref2.width,
         height = _ref2.height,
         pixels = _ref2.pixels;
