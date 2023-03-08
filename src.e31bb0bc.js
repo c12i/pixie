@@ -988,14 +988,14 @@ var RedoButton = /*#__PURE__*/function () {
           redo: true
         });
       },
-      disabled: state.prev.length < 1
+      disabled: state.redone.length < 1
     }, '⤵ Redo');
   }
 
   _createClass(RedoButton, [{
     key: "syncState",
     value: function syncState(state) {
-      this.dom.disabled = state.prev.length < 1;
+      this.dom.disabled = state.redone.length < 1;
     }
   }]);
 
@@ -1091,7 +1091,7 @@ var INITIAL_STATE = {
   color: '#000000',
   picture: _components.Picture.empty(60, 30, '#f0f0f0'),
   done: [],
-  prev: [],
+  redone: [],
   doneAt: 0
 };
 var baseTools = {
@@ -1105,22 +1105,22 @@ var baseControls = [_controls.ToolSelect, _controls.ColorSelect, _components.Sav
 function historyUpdateState(state, action) {
   if (action.undo) {
     if (state.done.length < 2) return state;
-    var prev = state.done.pop();
+    var redone = state.done.pop();
     return _objectSpread(_objectSpread({}, state), {}, {
       picture: state.done[state.done.length - 1],
       done: _toConsumableArray(state.done),
-      prev: [].concat(_toConsumableArray(state.prev), [prev]),
+      redone: [].concat(_toConsumableArray(state.redone), [redone]),
       doneAt: 0
     });
   }
 
   if (action.redo) {
-    if (state.prev.length < 1) return state;
-    var picture = state.prev.pop();
+    if (state.redone.length < 1) return state;
+    var picture = state.redone.pop();
     return _objectSpread(_objectSpread({}, state), {}, {
       picture: picture,
       done: [].concat(_toConsumableArray(state.done), [picture]),
-      prev: _toConsumableArray(state.prev),
+      redone: _toConsumableArray(state.redone),
       doneAt: 0
     });
   }
@@ -1128,7 +1128,9 @@ function historyUpdateState(state, action) {
   if (action.picture && state.doneAt < Date.now() - 1000) {
     return _objectSpread(_objectSpread(_objectSpread({}, state), action), {}, {
       done: [].concat(_toConsumableArray(state.done), [state.picture]),
-      prev: _toConsumableArray(state),
+      // redone state only relevant on undo, otherwise it remains empty
+      // on regular draw action
+      redone: [],
       doneAt: Date.now()
     });
   }
@@ -1183,7 +1185,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50955" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59528" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
