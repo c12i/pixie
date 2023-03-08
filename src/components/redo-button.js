@@ -6,13 +6,13 @@ export class RedoButton {
       'button',
       {
         onclick: () => dispatch({ redo: true }),
-        disabled: state.prev.length < 1,
+        disabled: state.redone.length < 1,
       },
       '⤵ Redo'
     )
   }
 
   syncState(state) {
-    this.dom.disabled = state.prev.length < 1
+    this.dom.disabled = state.redone.length < 1
   }
 }

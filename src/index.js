@@ -14,7 +14,7 @@ const INITIAL_STATE = {
   color: '#000000',
   picture: Picture.empty(60, 30, '#f0f0f0'),
   done: [],
-  prev: [],
+  redone: [],
   doneAt: 0,
 }
 
@@ -38,24 +38,24 @@ const baseControls = [
 function historyUpdateState(state, action) {
   if (action.undo) {
     if (state.done.length < 2) return state
-    let prev = state.done.pop()
+    let redone = state.done.pop()
     return {
       ...state,
       picture: state.done[state.done.length - 1],
       done: [...state.done],
-      prev: [...state.prev, prev],
+      redone: [...state.redone, redone],
       doneAt: 0,
     }
   }
 
   if (action.redo) {
-    if (state.prev.length < 1) return state
-    let picture = state.prev.pop()
+    if (state.redone.length < 1) return state
+    let picture = state.redone.pop()
     return {
       ...state,
       picture,
       done: [...state.done, picture],
-      prev: [...state.prev],
+      redone: [...state.redone],
       doneAt: 0,
     }
   }
@@ -65,7 +65,7 @@ function historyUpdateState(state, action) {
       ...state,
       ...action,
       done: [...state.done, state.picture],
-      prev: [...state.prev],
+      redone: [...state.redone],
       doneAt: Date.now(),
     }
   }
