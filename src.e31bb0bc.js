@@ -464,6 +464,13 @@ var PixelEditor = /*#__PURE__*/function () {
     this.dom = _utils.elt.apply(void 0, ['div', {}, this.canvas.dom, (0, _utils.elt)('br')].concat(_toConsumableArray(this.controls.reduce(function (a, c) {
       return a.concat(' ', c.dom);
     }, []))));
+    document.addEventListener('keydown', function (e) {
+      e.preventDefault();
+      dispatch({
+        undo: (e.metaKey || e.ctrlKey) && e.code === 'KeyZ',
+        redo: (e.metaKey || e.ctrlKey) && e.code === 'KeyY'
+      });
+    });
   }
 
   _createClass(PixelEditor, [{
@@ -1375,7 +1382,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52346" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50521" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
