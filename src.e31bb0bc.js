@@ -117,7 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"components/picture.js":[function(require,module,exports) {
+})({"picture.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -138,6 +138,9 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+/**
+ * This class represents the picture in the canvas
+ */
 var Picture = /*#__PURE__*/function () {
   function Picture(width, height, pixels) {
     _classCallCheck(this, Picture);
@@ -213,7 +216,7 @@ exports.hex = hex;
 exports.cached = cached;
 exports.getCachedState = getCachedState;
 
-var _picture = require("./components/picture");
+var _picture = require("./picture");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -296,7 +299,7 @@ function getCachedState() {
   state.picture = new _picture.Picture(state.picture.width, state.picture.height, state.picture.pixels);
   return state;
 }
-},{"./components/picture":"components/picture.js"}],"components/picture-canvas.js":[function(require,module,exports) {
+},{"./picture":"picture.js"}],"components/picture-canvas.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -306,7 +309,7 @@ exports.PictureCanvas = void 0;
 
 var _utils = require("../utils");
 
-var _picture = require("./picture");
+var _picture = require("../picture");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -401,7 +404,7 @@ PictureCanvas.prototype.touch = function (startEvent, onDown) {
   this.dom.addEventListener('touchmove', move);
   this.dom.addEventListener('touchend', end);
 };
-},{"../utils":"utils.js","./picture":"components/picture.js"}],"app.js":[function(require,module,exports) {
+},{"../utils":"utils.js","../picture":"picture.js"}],"app.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -444,12 +447,14 @@ var PixelEditor = /*#__PURE__*/function () {
         dispatch = config.dispatch;
     this.state = state;
     this.canvas = new _pictureCanvas.PictureCanvas(state.picture, function (pos) {
-      var tool = tools[_this.state.tool];
-      var onMove = tool(pos, _this.state, dispatch);
+      var selectedTool = tools[_this.state.tool]; // call the selected tool util in ./src/tools.js
 
-      if (onMove) {
+      var drawFunction = selectedTool(pos, _this.state, dispatch);
+
+      if (drawFunction) {
+        // call the function returned by the selected tool
         return function (pos) {
-          return onMove(pos, _this.state);
+          return drawFunction(pos, _this.state);
         };
       }
     });
@@ -487,148 +492,7 @@ var PixelEditor = /*#__PURE__*/function () {
 }();
 
 exports.PixelEditor = PixelEditor;
-},{"./components/picture-canvas":"components/picture-canvas.js","./utils":"utils.js"}],"controls/color-select.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.ColorSelect = void 0;
-
-var _utils = require("../utils");
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var ColorSelect = /*#__PURE__*/function () {
-  function ColorSelect(state, _ref) {
-    var _this = this;
-
-    var dispatch = _ref.dispatch;
-
-    _classCallCheck(this, ColorSelect);
-
-    this.input = (0, _utils.elt)('input', {
-      type: 'color',
-      value: state.color,
-      onchange: function onchange() {
-        return dispatch({
-          color: _this.input.value
-        });
-      }
-    });
-    this.dom = (0, _utils.elt)('label', null, '🎨 Color: ', this.input);
-  }
-  /**
-   * Sync the ColorSelect state
-   * @param {*} state
-   */
-
-
-  _createClass(ColorSelect, [{
-    key: "syncState",
-    value: function syncState(state) {
-      this.input.value = state.color;
-    }
-  }]);
-
-  return ColorSelect;
-}();
-
-exports.ColorSelect = ColorSelect;
-},{"../utils":"utils.js"}],"controls/tool-select.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.ToolSelect = void 0;
-
-var _utils = require("../utils");
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var ToolSelect = /*#__PURE__*/function () {
-  function ToolSelect(state, _ref) {
-    var _this = this;
-
-    var tools = _ref.tools,
-        dispatch = _ref.dispatch;
-
-    _classCallCheck(this, ToolSelect);
-
-    this.select = _utils.elt.apply(void 0, ['select', {
-      onchange: function onchange() {
-        return dispatch({
-          tool: _this.select.value
-        });
-      }
-    }].concat(_toConsumableArray(Object.keys(tools).map(function (name) {
-      return (0, _utils.elt)('option', {
-        selected: name == state.tool
-      }, name);
-    }))));
-    this.dom = (0, _utils.elt)('label', null, 'Tool: ', this.select);
-  }
-  /**
-   * Sync ToolSelect state
-   * @param {*} state
-   */
-
-
-  _createClass(ToolSelect, [{
-    key: "syncState",
-    value: function syncState(state) {
-      this.select.value = state.tool;
-    }
-  }]);
-
-  return ToolSelect;
-}();
-
-exports.ToolSelect = ToolSelect;
-},{"../utils":"utils.js"}],"controls/index.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "ColorSelect", {
-  enumerable: true,
-  get: function () {
-    return _colorSelect.ColorSelect;
-  }
-});
-Object.defineProperty(exports, "ToolSelect", {
-  enumerable: true,
-  get: function () {
-    return _toolSelect.ToolSelect;
-  }
-});
-
-var _colorSelect = require("./color-select");
-
-var _toolSelect = require("./tool-select");
-},{"./color-select":"controls/color-select.js","./tool-select":"controls/tool-select.js"}],"tools.js":[function(require,module,exports) {
+},{"./components/picture-canvas":"components/picture-canvas.js","./utils":"utils.js"}],"tools.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -876,7 +740,7 @@ exports.LoadButton = void 0;
 
 var _utils = require("../utils");
 
-var _picture = require("./picture");
+var _picture = require("../picture");
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -990,7 +854,7 @@ function pictureFromImage(image) {
 
   return new _picture.Picture(width, height, pixels);
 }
-},{"../utils":"utils.js","./picture":"components/picture.js"}],"components/save-button.js":[function(require,module,exports) {
+},{"../utils":"utils.js","../picture":"picture.js"}],"components/save-button.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1000,7 +864,7 @@ exports.SaveButton = void 0;
 
 var _utils = require("../utils");
 
-var _picture = require("./picture");
+var _picture = require("../picture");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1046,7 +910,7 @@ var SaveButton = /*#__PURE__*/function () {
 }();
 
 exports.SaveButton = SaveButton;
-},{"../utils":"utils.js","./picture":"components/picture.js"}],"components/undo-button.js":[function(require,module,exports) {
+},{"../utils":"utils.js","../picture":"picture.js"}],"components/undo-button.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1156,9 +1020,12 @@ var ResetButton = /*#__PURE__*/function () {
 
     this.dom = (0, _utils.elt)('button', {
       onclick: function onclick() {
-        return dispatch({
-          reset: true
-        });
+        // eslint-disable-next-line no-restricted-globals, no-alert
+        if (confirm('Are you sure you want to reset the canvas?')) {
+          dispatch({
+            reset: true
+          });
+        }
       },
       disabled: !state.done.length
     }, '🔁 Reset');
@@ -1175,6 +1042,125 @@ var ResetButton = /*#__PURE__*/function () {
 }();
 
 exports.ResetButton = ResetButton;
+},{"../utils":"utils.js"}],"components/tool-select.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ToolSelect = void 0;
+
+var _utils = require("../utils");
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var ToolSelect = /*#__PURE__*/function () {
+  function ToolSelect(state, _ref) {
+    var _this = this;
+
+    var tools = _ref.tools,
+        dispatch = _ref.dispatch;
+
+    _classCallCheck(this, ToolSelect);
+
+    this.select = _utils.elt.apply(void 0, ['select', {
+      onchange: function onchange() {
+        return dispatch({
+          tool: _this.select.value
+        });
+      }
+    }].concat(_toConsumableArray(Object.keys(tools).map(function (name) {
+      return (0, _utils.elt)('option', {
+        selected: name == state.tool
+      }, name);
+    }))));
+    this.dom = (0, _utils.elt)('label', null, 'Tool: ', this.select);
+  }
+  /**
+   * Sync ToolSelect state
+   * @param {*} state
+   */
+
+
+  _createClass(ToolSelect, [{
+    key: "syncState",
+    value: function syncState(state) {
+      this.select.value = state.tool;
+    }
+  }]);
+
+  return ToolSelect;
+}();
+
+exports.ToolSelect = ToolSelect;
+},{"../utils":"utils.js"}],"components/color-select.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ColorSelect = void 0;
+
+var _utils = require("../utils");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var ColorSelect = /*#__PURE__*/function () {
+  function ColorSelect(state, _ref) {
+    var _this = this;
+
+    var dispatch = _ref.dispatch;
+
+    _classCallCheck(this, ColorSelect);
+
+    this.input = (0, _utils.elt)('input', {
+      type: 'color',
+      value: state.color,
+      onchange: function onchange() {
+        return dispatch({
+          color: _this.input.value
+        });
+      }
+    });
+    this.dom = (0, _utils.elt)('label', null, '🎨 Color: ', this.input);
+  }
+  /**
+   * Sync the ColorSelect state
+   * @param {*} state
+   */
+
+
+  _createClass(ColorSelect, [{
+    key: "syncState",
+    value: function syncState(state) {
+      this.input.value = state.color;
+    }
+  }]);
+
+  return ColorSelect;
+}();
+
+exports.ColorSelect = ColorSelect;
 },{"../utils":"utils.js"}],"components/index.js":[function(require,module,exports) {
 "use strict";
 
@@ -1191,12 +1177,6 @@ Object.defineProperty(exports, "PictureCanvas", {
   enumerable: true,
   get: function () {
     return _pictureCanvas.PictureCanvas;
-  }
-});
-Object.defineProperty(exports, "Picture", {
-  enumerable: true,
-  get: function () {
-    return _picture.Picture;
   }
 });
 Object.defineProperty(exports, "SaveButton", {
@@ -1223,12 +1203,22 @@ Object.defineProperty(exports, "ResetButton", {
     return _resetButton.ResetButton;
   }
 });
+Object.defineProperty(exports, "ToolSelect", {
+  enumerable: true,
+  get: function () {
+    return _toolSelect.ToolSelect;
+  }
+});
+Object.defineProperty(exports, "ColorSelect", {
+  enumerable: true,
+  get: function () {
+    return _colorSelect.ColorSelect;
+  }
+});
 
 var _loadButton = require("./load-button");
 
 var _pictureCanvas = require("./picture-canvas");
-
-var _picture = require("./picture");
 
 var _saveButton = require("./save-button");
 
@@ -1237,16 +1227,20 @@ var _undoButton = require("./undo-button");
 var _redoButton = require("./redo-button");
 
 var _resetButton = require("./reset-button");
-},{"./load-button":"components/load-button.js","./picture-canvas":"components/picture-canvas.js","./picture":"components/picture.js","./save-button":"components/save-button.js","./undo-button":"components/undo-button.js","./redo-button":"components/redo-button.js","./reset-button":"components/reset-button.js"}],"index.js":[function(require,module,exports) {
+
+var _toolSelect = require("./tool-select");
+
+var _colorSelect = require("./color-select");
+},{"./load-button":"components/load-button.js","./picture-canvas":"components/picture-canvas.js","./save-button":"components/save-button.js","./undo-button":"components/undo-button.js","./redo-button":"components/redo-button.js","./reset-button":"components/reset-button.js","./tool-select":"components/tool-select.js","./color-select":"components/color-select.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _app = require("./app");
 
-var _controls = require("./controls");
-
 var _tools = require("./tools");
 
 var _components = require("./components");
+
+var _picture2 = require("./picture");
 
 var _utils = require("./utils");
 
@@ -1271,7 +1265,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var INITIAL_STATE = {
   tool: 'draw',
   color: '#000000',
-  picture: _components.Picture.empty(60, 30, '#f0f0f0'),
+  picture: _picture2.Picture.empty(60, 30, '#f0f0f0'),
   done: [],
   redone: [],
   doneAt: 0
@@ -1284,7 +1278,7 @@ var baseTools = {
   circle: _tools.circle,
   triangle: _tools.triangle
 };
-var baseControls = [_controls.ToolSelect, _controls.ColorSelect, _components.SaveButton, _components.LoadButton, _components.UndoButton, _components.RedoButton, _components.ResetButton]; // quasi - reducer function
+var baseControls = [_components.ToolSelect, _components.ColorSelect, _components.SaveButton, _components.LoadButton, _components.UndoButton, _components.RedoButton, _components.ResetButton]; // quasi - reducer function
 
 function historyUpdateState(state, action) {
   if (action.undo) {
@@ -1310,7 +1304,7 @@ function historyUpdateState(state, action) {
   }
 
   if (action.reset) {
-    var _picture = _components.Picture.empty(60, 30, '#f0f0f0');
+    var _picture = _picture2.Picture.empty(60, 30, '#f0f0f0');
 
     return (0, _utils.cached)(_objectSpread(_objectSpread({}, state), {}, {
       picture: _picture,
@@ -1353,7 +1347,7 @@ function startPixelEditor(_ref) {
 }
 
 document.getElementById('root').appendChild(startPixelEditor({}));
-},{"./app":"app.js","./controls":"controls/index.js","./tools":"tools.js","./components":"components/index.js","./utils":"utils.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./app":"app.js","./tools":"tools.js","./components":"components/index.js","./picture":"picture.js","./utils":"utils.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1381,7 +1375,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49487" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52346" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
