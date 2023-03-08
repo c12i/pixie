@@ -117,66 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"utils.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.updateState = updateState;
-exports.elt = elt;
-exports.hex = hex;
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-/**
- * Update object state
- */
-function updateState(state, action) {
-  return _objectSpread(_objectSpread({}, state), action);
-}
-/**
- * A less verbose DOM builder
- */
-
-
-function elt(type, props) {
-  var dom = document.createElement(type);
-
-  if (props) {
-    Object.assign(dom, props);
-  }
-
-  for (var _len = arguments.length, children = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-    children[_key - 2] = arguments[_key];
-  }
-
-  for (var _i = 0, _children = children; _i < _children.length; _i++) {
-    var child = _children[_i];
-
-    if (typeof child !== 'string') {
-      dom.appendChild(child);
-    } else {
-      dom.appendChild(document.createTextNode(child));
-    }
-  }
-
-  return dom;
-}
-/**
- * A hex helper function facilitate conversion of from 8 bit
- * numerical presentation of color to base-16.
- */
-
-
-function hex(n) {
-  return n.toString(16).padStart(2, '0');
-}
-},{}],"components/picture.js":[function(require,module,exports) {
+})({"components/picture.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -260,7 +201,102 @@ function drawPicture(picture, canvas, scale) {
     }
   }
 }
-},{}],"components/picture-canvas.js":[function(require,module,exports) {
+},{}],"utils.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.updateState = updateState;
+exports.elt = elt;
+exports.hex = hex;
+exports.cached = cached;
+exports.getCachedState = getCachedState;
+
+var _picture = require("./components/picture");
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+/**
+ * Update object state
+ */
+function updateState(state, action) {
+  return _objectSpread(_objectSpread({}, state), action);
+}
+/**
+ * A less verbose DOM builder
+ */
+
+
+function elt(type, props) {
+  var dom = document.createElement(type);
+
+  if (props) {
+    Object.assign(dom, props);
+  }
+
+  for (var _len = arguments.length, children = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+    children[_key - 2] = arguments[_key];
+  }
+
+  for (var _i = 0, _children = children; _i < _children.length; _i++) {
+    var child = _children[_i];
+
+    if (typeof child !== 'string') {
+      dom.appendChild(child);
+    } else {
+      dom.appendChild(document.createTextNode(child));
+    }
+  }
+
+  return dom;
+}
+/**
+ * A hex helper function facilitate conversion of from 8 bit
+ * numerical presentation of color to base-16.
+ */
+
+
+function hex(n) {
+  return n.toString(16).padStart(2, '0');
+}
+/**
+ * Cache data to local storage
+ */
+
+
+function cached(data) {
+  localStorage.setItem('_state', JSON.stringify(data));
+  return data;
+}
+/**
+ * Get cached state from local storage
+ */
+
+
+function getCachedState() {
+  var state = JSON.parse(localStorage.getItem('_state'));
+  if (!state) return;
+  state.done = state.done.map(function (_ref) {
+    var width = _ref.width,
+        height = _ref.height,
+        pixels = _ref.pixels;
+    return new _picture.Picture(width, height, pixels);
+  });
+  state.redone = state.done.map(function (_ref2) {
+    var width = _ref2.width,
+        height = _ref2.height,
+        pixels = _ref2.pixels;
+    return new _picture.Picture(width, height, pixels);
+  });
+  state.picture = new _picture.Picture(state.picture.width, state.picture.height, state.picture.pixels);
+  return state;
+}
+},{"./components/picture":"components/picture.js"}],"components/picture-canvas.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1161,6 +1197,8 @@ var _tools = require("./tools");
 
 var _components = require("./components");
 
+var _utils = require("./utils");
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -1201,41 +1239,43 @@ function historyUpdateState(state, action) {
   if (action.undo) {
     if (state.done.length < 2) return state;
     var redone = state.done.pop();
-    return _objectSpread(_objectSpread({}, state), {}, {
+    return (0, _utils.cached)(_objectSpread(_objectSpread({}, state), {}, {
       picture: state.done[state.done.length - 1],
       done: _toConsumableArray(state.done),
       redone: [].concat(_toConsumableArray(state.redone), [redone]),
       doneAt: 0
-    });
+    }));
   }
 
   if (action.redo) {
     if (state.redone.length < 1) return state;
     var picture = state.redone.pop();
-    return _objectSpread(_objectSpread({}, state), {}, {
+    return (0, _utils.cached)(_objectSpread(_objectSpread({}, state), {}, {
       picture: picture,
       done: [].concat(_toConsumableArray(state.done), [picture]),
       redone: _toConsumableArray(state.redone),
       doneAt: 0
-    });
+    }));
   }
 
   if (action.picture && state.doneAt < Date.now() - 1000) {
-    return _objectSpread(_objectSpread(_objectSpread({}, state), action), {}, {
+    return (0, _utils.cached)(_objectSpread(_objectSpread(_objectSpread({}, state), action), {}, {
       done: [].concat(_toConsumableArray(state.done), [state.picture]),
       // redone state only relevant on undo, otherwise it remains empty
-      // on regular draw action
+      // on regular picture action
       redone: [],
       doneAt: Date.now()
-    });
+    }));
   }
 
-  return _objectSpread(_objectSpread({}, state), action);
+  return (0, _utils.cached)(_objectSpread(_objectSpread({}, state), action));
 }
 
 function startPixelEditor(_ref) {
+  var _getCachedState;
+
   var _ref$state = _ref.state,
-      state = _ref$state === void 0 ? INITIAL_STATE : _ref$state,
+      state = _ref$state === void 0 ? (_getCachedState = (0, _utils.getCachedState)()) !== null && _getCachedState !== void 0 ? _getCachedState : INITIAL_STATE : _ref$state,
       _ref$tools = _ref.tools,
       tools = _ref$tools === void 0 ? baseTools : _ref$tools,
       _ref$controls = _ref.controls,
@@ -1252,7 +1292,7 @@ function startPixelEditor(_ref) {
 }
 
 document.getElementById('root').appendChild(startPixelEditor({}));
-},{"./app":"app.js","./controls":"controls/index.js","./tools":"tools.js","./components":"components/index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./app":"app.js","./controls":"controls/index.js","./tools":"tools.js","./components":"components/index.js","./utils":"utils.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1280,7 +1320,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60908" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61168" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
