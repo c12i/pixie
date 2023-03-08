@@ -76,6 +76,11 @@ function historyUpdateState(state, action) {
     })
   }
 
+  if (action.save) {
+    SaveButton.save(state.picture)
+    return { ...state }
+  }
+
   if (action.picture && state.doneAt < Date.now() - 1000) {
     return cached({
       ...state,

@@ -27,6 +27,7 @@ export class PixelEditor {
       dispatch({
         undo: (e.metaKey || e.ctrlKey) && e.code === 'KeyZ',
         redo: (e.metaKey || e.ctrlKey) && e.code === 'KeyY',
+        save: (e.metaKey || e.ctrlKey) && e.code === 'KeyS',
       })
     })
   }

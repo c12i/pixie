@@ -2,23 +2,24 @@ import { elt } from '../utils'
 import { drawPicture } from '../picture'
 
 export class SaveButton {
-  constructor(state) {
+  constructor(state, { dispatch }) {
     this.picture = state.picture
     this.dom = elt(
       'button',
       {
-        onclick: () => this.save(),
+        onclick: () => dispatch({ save: true }),
       },
       '💾 Save'
     )
   }
 
-  save() {
+  static save(picture) {
     let canvas = elt('canvas')
-    drawPicture(this.picture, canvas, 10)
+    drawPicture(picture, canvas, 10)
     let link = elt('a', {
       href: canvas.toDataURL(),
-      download: 'pixel-art.png',
+      // eslint-disable-next-line no-alert
+      download: `${prompt('save file as?', 'pixel-art') ?? 'pixel-art'}.png`,
     })
     document.body.appendChild(link)
     link.click()
