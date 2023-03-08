@@ -1,5 +1,4 @@
-import { elt } from '../utils'
-import { drawPicture } from '../picture'
+import { drawPicture, elt } from '../utils'
 
 export class SaveButton {
   constructor(state, { dispatch }) {

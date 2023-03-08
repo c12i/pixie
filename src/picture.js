@@ -25,16 +25,3 @@ export class Picture {
     return new Picture(this.width, this.height, copy)
   }
 }
-
-export function drawPicture(picture, canvas, scale) {
-  canvas.width = picture.width * scale
-  canvas.height = picture.height * scale
-  let ctx = canvas.getContext('2d')
-
-  for (let y = 0; y < picture.height; y++) {
-    for (let x = 0; x < picture.width; x++) {
-      ctx.fillStyle = picture.pixel(x, y)
-      ctx.fillRect(x * scale, y * scale, scale, scale)
-    }
-  }
-}

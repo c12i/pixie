@@ -1,13 +1,6 @@
 import { Picture } from './picture'
 
 /**
- * Update object state
- */
-export function updateState(state, action) {
-  return { ...state, ...action }
-}
-
-/**
  * A less verbose DOM builder
  */
 export function elt(type, props, ...children) {
@@ -23,6 +16,22 @@ export function elt(type, props, ...children) {
     }
   }
   return dom
+}
+
+/**
+ * Draws picture into the canvas
+ */
+export function drawPicture(picture, canvas, scale) {
+  canvas.width = picture.width * scale
+  canvas.height = picture.height * scale
+  let ctx = canvas.getContext('2d')
+
+  for (let y = 0; y < picture.height; y++) {
+    for (let x = 0; x < picture.width; x++) {
+      ctx.fillStyle = picture.pixel(x, y)
+      ctx.fillRect(x * scale, y * scale, scale, scale)
+    }
+  }
 }
 
 /**
