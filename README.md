@@ -14,11 +14,12 @@ App install:
 - Tools:
   - Draw tool
   - Fill tool
-  - Rectangle tool
+  - Shape tools: Rectangle, Circle and Triangle tools are supported
   - Color picker
-- Save drawn image
+- Save drawn image as png
 - Load image to editor (a bit wonky)
-- Undo action
+- Undo/ Redo action
+- Local caching
 
 ## Usage
 
