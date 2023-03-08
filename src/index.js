@@ -65,7 +65,7 @@ function historyUpdateState(state, action) {
       ...state,
       ...action,
       done: [...state.done, state.picture],
-      prev: [],
+      prev: [...state],
       doneAt: Date.now(),
     }
   }
