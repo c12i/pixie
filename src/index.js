@@ -1,6 +1,6 @@
 import { PixelEditor } from './app'
 import { ColorSelect, ToolSelect } from './controls'
-import { draw, fill, pick, rectangle, circle } from './tools'
+import { draw, fill, pick, rectangle, circle, triangle } from './tools'
 import {
   Picture,
   LoadButton,
@@ -21,9 +21,10 @@ const INITIAL_STATE = {
 const baseTools = {
   draw,
   fill,
-  rectangle,
   pick,
+  rectangle,
   circle,
+  triangle,
 }
 
 const baseControls = [

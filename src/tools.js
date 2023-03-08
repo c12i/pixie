@@ -34,6 +34,7 @@ export function rectangle(start, state, dispatch) {
 
 /**
  * To quickly draw circles
+ * assisted by chatGPT
  */
 export function circle(start, state, dispatch) {
   function drawCircle(pos) {
@@ -59,6 +60,47 @@ export function circle(start, state, dispatch) {
   }
   drawCircle(start)
   return drawCircle
+}
+
+/**
+ * This function uses the Bresenham's line algorithm to draw a triangle
+ * on the canvas
+ * assisted by chatGPT
+ */
+export function triangle(start, state, dispatch) {
+  function drawTriangle(pos) {
+    const x1 = start.x
+    const y1 = start.y
+    const x2 = pos.x
+    const y2 = pos.y
+    const deltaX = Math.abs(x2 - x1)
+    const deltaY = Math.abs(y2 - y1)
+    const signX = x1 < x2 ? 1 : -1
+    const signY = y1 < y2 ? 1 : -1
+    let x = x1
+    let y = y1
+    let error = deltaX - deltaY
+    let drawn = []
+
+    while (x !== x2 || y !== y2) {
+      drawn.push({ x, y, color: state.color })
+      const error2 = 2 * error
+      if (error2 > -deltaY) {
+        error -= deltaY
+        x += signX
+      }
+      if (error2 < deltaX) {
+        error += deltaX
+        y += signY
+      }
+    }
+    drawn.push({ x: x2, y: y2, color: state.color })
+
+    dispatch({ picture: state.picture.draw(drawn) })
+  }
+
+  drawTriangle(start)
+  return drawTriangle
 }
 
 const around = [
