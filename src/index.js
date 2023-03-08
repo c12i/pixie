@@ -65,7 +65,9 @@ function historyUpdateState(state, action) {
       ...state,
       ...action,
       done: [...state.done, state.picture],
-      redone: [...state.redone],
+      // redone state only relevant on undo, otherwise it remains empty
+      // on regular draw action
+      redone: [],
       doneAt: Date.now(),
     }
   }
