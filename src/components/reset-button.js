@@ -5,7 +5,12 @@ export class ResetButton {
     this.dom = elt(
       'button',
       {
-        onclick: () => dispatch({ reset: true }),
+        onclick: () => {
+          // eslint-disable-next-line no-restricted-globals, no-alert
+          if (confirm('Are you sure you want to reset the canvas?')) {
+            dispatch({ reset: true })
+          }
+        },
         disabled: !state.done.length,
       },
       '🔁 Reset'
