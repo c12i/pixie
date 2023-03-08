@@ -601,6 +601,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.draw = draw;
 exports.rectangle = rectangle;
 exports.circle = circle;
+exports.triangle = triangle;
 exports.fill = fill;
 exports.pick = pick;
 
@@ -664,6 +665,7 @@ function rectangle(start, state, dispatch) {
 }
 /**
  * To quickly draw circles
+ * assisted by chatGPT
  */
 
 
@@ -697,6 +699,60 @@ function circle(start, state, dispatch) {
 
   drawCircle(start);
   return drawCircle;
+}
+/**
+ * This function uses the Bresenham's line algorithm to draw a triangle
+ * on the canvas
+ * assisted by chatGPT
+ */
+
+
+function triangle(start, state, dispatch) {
+  function drawTriangle(pos) {
+    var x1 = start.x;
+    var y1 = start.y;
+    var x2 = pos.x;
+    var y2 = pos.y;
+    var deltaX = Math.abs(x2 - x1);
+    var deltaY = Math.abs(y2 - y1);
+    var signX = x1 < x2 ? 1 : -1;
+    var signY = y1 < y2 ? 1 : -1;
+    var x = x1;
+    var y = y1;
+    var error = deltaX - deltaY;
+    var drawn = [];
+
+    while (x !== x2 || y !== y2) {
+      drawn.push({
+        x: x,
+        y: y,
+        color: state.color
+      });
+      var error2 = 2 * error;
+
+      if (error2 > -deltaY) {
+        error -= deltaY;
+        x += signX;
+      }
+
+      if (error2 < deltaX) {
+        error += deltaX;
+        y += signY;
+      }
+    }
+
+    drawn.push({
+      x: x2,
+      y: y2,
+      color: state.color
+    });
+    dispatch({
+      picture: state.picture.draw(drawn)
+    });
+  }
+
+  drawTriangle(start);
+  return drawTriangle;
 }
 
 var around = [{
@@ -1134,9 +1190,10 @@ var INITIAL_STATE = {
 var baseTools = {
   draw: _tools.draw,
   fill: _tools.fill,
-  rectangle: _tools.rectangle,
   pick: _tools.pick,
-  circle: _tools.circle
+  rectangle: _tools.rectangle,
+  circle: _tools.circle,
+  triangle: _tools.triangle
 };
 var baseControls = [_controls.ToolSelect, _controls.ColorSelect, _components.SaveButton, _components.LoadButton, _components.UndoButton, _components.RedoButton]; // quasi - reducer function
 
@@ -1223,7 +1280,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60654" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60908" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
