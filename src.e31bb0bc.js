@@ -1132,6 +1132,49 @@ var RedoButton = /*#__PURE__*/function () {
 }();
 
 exports.RedoButton = RedoButton;
+},{"../utils":"utils.js"}],"components/reset-button.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ResetButton = void 0;
+
+var _utils = require("../utils");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var ResetButton = /*#__PURE__*/function () {
+  function ResetButton(state, _ref) {
+    var dispatch = _ref.dispatch;
+
+    _classCallCheck(this, ResetButton);
+
+    this.dom = (0, _utils.elt)('button', {
+      onclick: function onclick() {
+        return dispatch({
+          reset: true
+        });
+      },
+      disabled: !state.done.length
+    }, '🔁 Reset');
+  }
+
+  _createClass(ResetButton, [{
+    key: "syncState",
+    value: function syncState(state) {
+      this.dom.disabled = !state.done.length;
+    }
+  }]);
+
+  return ResetButton;
+}();
+
+exports.ResetButton = ResetButton;
 },{"../utils":"utils.js"}],"components/index.js":[function(require,module,exports) {
 "use strict";
 
@@ -1174,6 +1217,12 @@ Object.defineProperty(exports, "RedoButton", {
     return _redoButton.RedoButton;
   }
 });
+Object.defineProperty(exports, "ResetButton", {
+  enumerable: true,
+  get: function () {
+    return _resetButton.ResetButton;
+  }
+});
 
 var _loadButton = require("./load-button");
 
@@ -1186,7 +1235,9 @@ var _saveButton = require("./save-button");
 var _undoButton = require("./undo-button");
 
 var _redoButton = require("./redo-button");
-},{"./load-button":"components/load-button.js","./picture-canvas":"components/picture-canvas.js","./picture":"components/picture.js","./save-button":"components/save-button.js","./undo-button":"components/undo-button.js","./redo-button":"components/redo-button.js"}],"index.js":[function(require,module,exports) {
+
+var _resetButton = require("./reset-button");
+},{"./load-button":"components/load-button.js","./picture-canvas":"components/picture-canvas.js","./picture":"components/picture.js","./save-button":"components/save-button.js","./undo-button":"components/undo-button.js","./redo-button":"components/redo-button.js","./reset-button":"components/reset-button.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _app = require("./app");
@@ -1233,7 +1284,7 @@ var baseTools = {
   circle: _tools.circle,
   triangle: _tools.triangle
 };
-var baseControls = [_controls.ToolSelect, _controls.ColorSelect, _components.SaveButton, _components.LoadButton, _components.UndoButton, _components.RedoButton]; // quasi - reducer function
+var baseControls = [_controls.ToolSelect, _controls.ColorSelect, _components.SaveButton, _components.LoadButton, _components.UndoButton, _components.RedoButton, _components.ResetButton]; // quasi - reducer function
 
 function historyUpdateState(state, action) {
   if (action.undo) {
@@ -1255,6 +1306,16 @@ function historyUpdateState(state, action) {
       done: [].concat(_toConsumableArray(state.done), [picture]),
       redone: _toConsumableArray(state.redone),
       doneAt: 0
+    }));
+  }
+
+  if (action.reset) {
+    var _picture = _components.Picture.empty(60, 30, '#f0f0f0');
+
+    return (0, _utils.cached)(_objectSpread(_objectSpread({}, state), {}, {
+      picture: _picture,
+      done: [],
+      redone: []
     }));
   }
 
@@ -1320,7 +1381,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61168" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49487" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
