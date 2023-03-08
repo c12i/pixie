@@ -1128,7 +1128,7 @@ function historyUpdateState(state, action) {
   if (action.picture && state.doneAt < Date.now() - 1000) {
     return _objectSpread(_objectSpread(_objectSpread({}, state), action), {}, {
       done: [].concat(_toConsumableArray(state.done), [state.picture]),
-      prev: [],
+      prev: _toConsumableArray(state),
       doneAt: Date.now()
     });
   }
