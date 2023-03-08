@@ -50,7 +50,7 @@ export function getCachedState() {
   state.done = state.done.map(
     ({ width, height, pixels }) => new Picture(width, height, pixels)
   )
-  state.redone = state.done.map(
+  state.redone = state.redone.map(
     ({ width, height, pixels }) => new Picture(width, height, pixels)
   )
   state.picture = new Picture(
