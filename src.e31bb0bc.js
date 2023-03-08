@@ -600,6 +600,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.draw = draw;
 exports.rectangle = rectangle;
+exports.circle = circle;
 exports.fill = fill;
 exports.pick = pick;
 
@@ -660,6 +661,42 @@ function rectangle(start, state, dispatch) {
 
   drawRectangle(start);
   return drawRectangle;
+}
+/**
+ * To quickly draw circles
+ */
+
+
+function circle(start, state, dispatch) {
+  function drawCircle(pos) {
+    var radius = Math.sqrt( // eslint-disable-next-line no-restricted-properties
+    Math.pow(pos.x - start.x, 2) + Math.pow(pos.y - start.y, 2));
+    var centerX = start.x + radius;
+    var centerY = start.y + radius;
+    var drawn = [];
+
+    for (var y = centerY - radius; y <= centerY + radius; y++) {
+      for (var x = centerX - radius; x <= centerX + radius; x++) {
+        var distance = Math.sqrt( // eslint-disable-next-line no-restricted-properties
+        Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+
+        if (distance <= radius) {
+          drawn.push({
+            x: x,
+            y: y,
+            color: state.color
+          });
+        }
+      }
+    }
+
+    dispatch({
+      picture: state.picture.draw(drawn)
+    });
+  }
+
+  drawCircle(start);
+  return drawCircle;
 }
 
 var around = [{
@@ -1098,7 +1135,8 @@ var baseTools = {
   draw: _tools.draw,
   fill: _tools.fill,
   rectangle: _tools.rectangle,
-  pick: _tools.pick
+  pick: _tools.pick,
+  circle: _tools.circle
 };
 var baseControls = [_controls.ToolSelect, _controls.ColorSelect, _components.SaveButton, _components.LoadButton, _components.UndoButton, _components.RedoButton]; // quasi - reducer function
 
@@ -1185,7 +1223,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59528" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60654" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
