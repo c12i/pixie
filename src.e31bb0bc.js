@@ -945,14 +945,14 @@ var UndoButton = /*#__PURE__*/function () {
           undo: true
         });
       },
-      disabled: state.done.length == 0
+      disabled: state.done.length < 2
     }, '⤴ Undo');
   }
 
   _createClass(UndoButton, [{
     key: "syncState",
     value: function syncState(state) {
-      this.dom.disabled = state.done.length == 0;
+      this.dom.disabled = state.done.length < 2;
     }
   }]);
 
@@ -988,14 +988,14 @@ var RedoButton = /*#__PURE__*/function () {
           redo: true
         });
       },
-      disabled: state.done.length == 0
+      disabled: state.prev.length < 1
     }, '⤵ Redo');
   }
 
   _createClass(RedoButton, [{
     key: "syncState",
     value: function syncState(state) {
-      this.dom.disabled = state.done.length == 0;
+      this.dom.disabled = state.prev.length < 1;
     }
   }]);
 
@@ -1091,6 +1091,7 @@ var INITIAL_STATE = {
   color: '#000000',
   picture: _components.Picture.empty(60, 30, '#f0f0f0'),
   done: [],
+  prev: [],
   doneAt: 0
 };
 var baseTools = {
@@ -1102,24 +1103,32 @@ var baseTools = {
 var baseControls = [_controls.ToolSelect, _controls.ColorSelect, _components.SaveButton, _components.LoadButton, _components.UndoButton, _components.RedoButton]; // quasi - reducer function
 
 function historyUpdateState(state, action) {
-  if (action.undo == true) {
-    if (state.done.length == 0) return state;
+  if (action.undo) {
+    if (state.done.length < 2) return state;
+    var prev = state.done.pop();
     return _objectSpread(_objectSpread({}, state), {}, {
-      picture: state.done[0],
-      done: state.done.slice(1),
+      picture: state.done[state.done.length - 1],
+      done: _toConsumableArray(state.done),
+      prev: [].concat(_toConsumableArray(state.prev), [prev]),
       doneAt: 0
     });
-  } // TODO: Implement redo
+  }
 
-
-  if (action.redo == true) {
-    if (state.done.length == 0) return state;
-    console.log(state);
+  if (action.redo) {
+    if (state.prev.length < 1) return state;
+    var picture = state.prev.pop();
+    return _objectSpread(_objectSpread({}, state), {}, {
+      picture: picture,
+      done: [].concat(_toConsumableArray(state.done), [picture]),
+      prev: _toConsumableArray(state.prev),
+      doneAt: 0
+    });
   }
 
   if (action.picture && state.doneAt < Date.now() - 1000) {
     return _objectSpread(_objectSpread(_objectSpread({}, state), action), {}, {
-      done: [state.picture].concat(_toConsumableArray(state.done)),
+      done: [].concat(_toConsumableArray(state.done), [state.picture]),
+      prev: [],
       doneAt: Date.now()
     });
   }
@@ -1174,7 +1183,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49973" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50955" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
