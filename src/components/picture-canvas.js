@@ -37,14 +37,6 @@ PictureCanvas.prototype.mouse = function (downEvent, onDown) {
   this.dom.addEventListener('mousemove', move)
 }
 
-function pointerPosition(pos, domNode) {
-  let rect = domNode.getBoundingClientRect()
-  return {
-    x: Math.floor((pos.clientX - rect.left) / SCALE),
-    y: Math.floor((pos.clientY - rect.top) / SCALE),
-  }
-}
-
 PictureCanvas.prototype.touch = function (startEvent, onDown) {
   let pos = pointerPosition(startEvent.touches[0], this.dom)
   let onMove = onDown(pos)
@@ -63,4 +55,12 @@ PictureCanvas.prototype.touch = function (startEvent, onDown) {
   }
   this.dom.addEventListener('touchmove', move)
   this.dom.addEventListener('touchend', end)
+}
+
+function pointerPosition(pos, domNode) {
+  let rect = domNode.getBoundingClientRect()
+  return {
+    x: Math.floor((pos.clientX - rect.left) / SCALE),
+    y: Math.floor((pos.clientY - rect.top) / SCALE),
+  }
 }
