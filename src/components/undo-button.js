@@ -6,13 +6,13 @@ export class UndoButton {
       'button',
       {
         onclick: () => dispatch({ undo: true }),
-        disabled: state.done.length == 0,
+        disabled: state.done.length < 2,
       },
       '⤴ Undo'
     )
   }
 
   syncState(state) {
-    this.dom.disabled = state.done.length == 0
+    this.dom.disabled = state.done.length < 2
   }
 }

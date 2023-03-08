@@ -14,6 +14,7 @@ const INITIAL_STATE = {
   color: '#000000',
   picture: Picture.empty(60, 30, '#f0f0f0'),
   done: [],
+  prev: [],
   doneAt: 0,
 }
 
@@ -35,20 +36,28 @@ const baseControls = [
 
 // quasi - reducer function
 function historyUpdateState(state, action) {
-  if (action.undo == true) {
-    if (state.done.length == 0) return state
+  if (action.undo) {
+    if (state.done.length < 2) return state
+    let prev = state.done.shift()
     return {
       ...state,
       picture: state.done[0],
-      done: state.done.slice(1),
+      done: [...state.done],
+      prev: [...state.prev, prev],
       doneAt: 0,
     }
   }
 
-  // TODO: Implement redo
-  if (action.redo == true) {
-    if (state.done.length == 0) return state
-    console.log(state)
+  if (action.redo) {
+    if (state.prev.length < 1) return state
+    let picture = state.prev.pop()
+    return {
+      ...state,
+      picture,
+      done: [picture, ...state.done],
+      prev: [...state.prev],
+      doneAt: 0,
+    }
   }
 
   if (action.picture && state.doneAt < Date.now() - 1000) {
@@ -56,6 +65,7 @@ function historyUpdateState(state, action) {
       ...state,
       ...action,
       done: [state.picture, ...state.done],
+      prev: [],
       doneAt: Date.now(),
     }
   }
