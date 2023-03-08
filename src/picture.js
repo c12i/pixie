@@ -1,3 +1,6 @@
+/**
+ * This class represents the picture in the canvas
+ */
 export class Picture {
   constructor(width, height, pixels) {
     this.width = width

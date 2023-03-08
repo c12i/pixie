@@ -1,5 +1,5 @@
 import { elt } from '../utils'
-import { drawPicture } from './picture'
+import { drawPicture } from '../picture'
 
 const SCALE = 10
 

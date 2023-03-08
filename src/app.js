@@ -6,10 +6,12 @@ export class PixelEditor {
     let { tools, controls, dispatch } = config
     this.state = state
     this.canvas = new PictureCanvas(state.picture, (pos) => {
-      let tool = tools[this.state.tool]
-      let onMove = tool(pos, this.state, dispatch)
-      if (onMove) {
-        return (pos) => onMove(pos, this.state)
+      let selectedTool = tools[this.state.tool]
+      // call the selected tool util in ./src/tools.js
+      let drawFunction = selectedTool(pos, this.state, dispatch)
+      if (drawFunction) {
+        // call the function returned by the selected tool
+        return (pos) => drawFunction(pos, this.state)
       }
     })
     this.controls = controls.map((Control) => new Control(state, config))

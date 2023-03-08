@@ -1,4 +1,4 @@
-import { Picture } from './components/picture'
+import { Picture } from './picture'
 
 /**
  * Update object state

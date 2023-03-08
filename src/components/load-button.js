@@ -1,5 +1,5 @@
 import { elt, hex } from '../utils'
-import { Picture } from './picture'
+import { Picture } from '../picture'
 
 export class LoadButton {
   constructor(_, { dispatch }) {

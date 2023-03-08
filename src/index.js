@@ -1,14 +1,15 @@
 import { PixelEditor } from './app'
-import { ColorSelect, ToolSelect } from './controls'
 import { draw, fill, pick, rectangle, circle, triangle } from './tools'
 import {
-  Picture,
   LoadButton,
   SaveButton,
   UndoButton,
   RedoButton,
   ResetButton,
+  ToolSelect,
+  ColorSelect,
 } from './components'
+import {Picture} from './picture'
 import { cached, getCachedState } from './utils'
 
 const INITIAL_STATE = {
