@@ -32,6 +32,35 @@ export function rectangle(start, state, dispatch) {
   return drawRectangle
 }
 
+/**
+ * To quickly draw circles
+ */
+export function circle(start, state, dispatch) {
+  function drawCircle(pos) {
+    const radius = Math.sqrt(
+      // eslint-disable-next-line no-restricted-properties
+      Math.pow(pos.x - start.x, 2) + Math.pow(pos.y - start.y, 2)
+    )
+    const centerX = start.x + radius
+    const centerY = start.y + radius
+    let drawn = []
+    for (let y = centerY - radius; y <= centerY + radius; y++) {
+      for (let x = centerX - radius; x <= centerX + radius; x++) {
+        const distance = Math.sqrt(
+          // eslint-disable-next-line no-restricted-properties
+          Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2)
+        )
+        if (distance <= radius) {
+          drawn.push({ x, y, color: state.color })
+        }
+      }
+    }
+    dispatch({ picture: state.picture.draw(drawn) })
+  }
+  drawCircle(start)
+  return drawCircle
+}
+
 const around = [
   { dx: -1, dy: 0 },
   { dx: 1, dy: 0 },
