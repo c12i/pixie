@@ -1,35 +1,30 @@
 {
-    "env": {
-        "browser": true,
-        "es2020": true
-    },
-    "extends": [
-        "airbnb",
-        "prettier"
-    ],
-    "plugins": [
-        "prettier"
-    ],
-    "parserOptions": {
-        "ecmaVersion": 12,
-        "sourceType": "module"
-    },
-    "rules": {
-        "prettier/prettier": "warn",
-        "no-console": "off",
-        "no-unused-vars": "warn",
-        "func-names": "off",
-        "prefer-const": "off",
-        "no-shadow": "off",
-        "no-param-reassign": "off",
-        "no-restricted-syntax": "off",
-        "no-plusplus": "off",
-        "eqeqeq": "off",
-        "no-use-before-define": "off",
-        "class-methods-use-this": "off",
-        "max-classes-per-file": "off",
-        "consistent-return": "off",
-        "import/prefer-default-export": "off",
-        "import/no-extraneous-dependencies": "off"
-    }
+  "env": {
+    "browser": true,
+    "es2020": true
+  },
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["prettier"],
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "rules": {
+    "prettier/prettier": "warn",
+    "no-console": "off",
+    "no-unused-vars": "warn",
+    "func-names": "off",
+    "prefer-const": "off",
+    "no-shadow": "off",
+    "no-param-reassign": "off",
+    "no-restricted-syntax": "off",
+    "no-plusplus": "off",
+    "eqeqeq": "off",
+    "no-use-before-define": "off",
+    "class-methods-use-this": "off",
+    "max-classes-per-file": "off",
+    "consistent-return": "off",
+    "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": "off"
+  }
 }

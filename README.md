@@ -23,7 +23,7 @@ A pixel art editor purely built with vanilla JavaScript + canvas
 
 ## Local Development
 
-Install webpack and webpack-dev-server
+Install dev dependencies
 
 ```sh
 npm install
