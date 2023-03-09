@@ -2,13 +2,10 @@
   "name": "pixie",
   "version": "1.0.0",
   "description": "A pixel art editor purely built with javascript + canvas",
-  "main": "src/electron.js",
+  "main": "src/index.js",
   "scripts": {
     "dev": "parcel src/index.html",
     "build": "parcel build src/index.html --public-url ./",
-    "dev:electron": "electron src/electron.js",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder -wm",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\""
@@ -33,8 +30,6 @@
   },
   "homepage": "https://github.com/collinsmuriuki/pixel-art-editor#readme",
   "devDependencies": {
-    "electron": "^11.3.0",
-    "electron-builder": "^22.9.1",
     "eslint": "^7.2.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.15.0",
@@ -45,8 +40,5 @@
     "eslint-plugin-react-hooks": "^4.0.0",
     "parcel-bundler": "^1.12.5",
     "prettier": "^2.1.2"
-  },
-  "dependencies": {
-    "electron-util": "^0.14.2"
   }
 }

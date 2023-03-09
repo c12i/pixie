@@ -1,15 +1,14 @@
-# Pixie
+# [Pixie](https://pixie.collinsmuriuki.xyz)
 
 A pixel art editor purely built with vanilla JavaScript + canvas
 
-App install:
+![snip](./samples/snip.png)
 
-- [Mac](https://keybase.pub/collinsmuriuki/pixie/mac/pixie-1.0.0.dmg)
-- [Windows](https://keybase.pub/collinsmuriuki/pixie/windows/pixie%20Setup%201.0.0.exe)
+![fruitzz](./samples/fruitzz.png)
+
+![art](./samples/art.png)
 
 ## Features
-
-![snip](./snip.png)
 
 - Tools:
   - Draw tool
@@ -22,7 +21,7 @@ App install:
 - Save your pixel art with `ctrl/cmd + "s"` keybind support
 - Local caching
 
-## Usage
+## Local Development
 
 Install webpack and webpack-dev-server
 
@@ -35,30 +34,6 @@ Run local server
 ```sh
 npm run dev
 ```
-
-## Electron
-
-Run development build
-
-```
-npm run dev:electron
-```
-
-Build for current system
-
-```
-npm run pack
-```
-
-Build distributable for Mac, Windows and Linux
-
-```
-npm run dist
-```
-
-## References
-
-Eloquent JavaScript: A Modern Introduction to Programming
 
 ## TODO
 
