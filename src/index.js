@@ -111,4 +111,5 @@ function startPixelEditor({
   return app.dom
 }
 
+console.info('Fork me on github: https://github.com/collinsmuriuki/pixie')
 document.getElementById('root').appendChild(startPixelEditor({}))
