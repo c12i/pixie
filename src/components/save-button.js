@@ -1,4 +1,5 @@
 import { drawPicture, elt } from '../utils'
+import { SCALE } from './picture-canvas'
 
 export class SaveButton {
   constructor(state, { dispatch }) {
@@ -14,7 +15,7 @@ export class SaveButton {
 
   static save(picture) {
     let canvas = elt('canvas')
-    drawPicture(picture, canvas, 10)
+    drawPicture(picture, canvas, SCALE)
     let link = elt('a', {
       href: canvas.toDataURL(),
       // eslint-disable-next-line no-alert
