@@ -43,7 +43,7 @@ const baseControls = [
 // quasi - reducer function
 function historyUpdateState(state, action) {
   if (action.undo) {
-    if (state.done.length < 2) return state
+    if (state.done.length <= 1) return state
     let redone = state.done.pop()
     return cached({
       ...state,
