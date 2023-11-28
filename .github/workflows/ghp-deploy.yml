@@ -5,22 +5,20 @@ on:
   branches:
     - master
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+          node-version: '18.x'
       - run: |
-         npm ci
-         npm run build
-         pip install ghp-import
-         ghp-import -n ./dist
-         git push -qf https://github.com/c12i/pixie.git gh-pages
+          npm ci
+          npm run build
+          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/c12i/pixie.git
+          npx gh-pages -d ./dist -u "github-actions-bot <support+actions@github.com>" --cname pixie.collinsmuriuki.xyz

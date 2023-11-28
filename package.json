@@ -8,6 +8,7 @@
     "build": "parcel build src/index.html --public-url ./",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
+    "deploy": "gh-pages -d dist",
     "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\""
   },
   "build": {
@@ -40,5 +41,8 @@
     "eslint-plugin-react-hooks": "^4.0.0",
     "parcel-bundler": "^1.12.5",
     "prettier": "^2.1.2"
+  },
+  "dependencies": {
+    "gh-pages": "^6.1.0"
   }
 }
