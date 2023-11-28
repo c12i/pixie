@@ -1,6 +1,6 @@
-import { drawPicture, elt, isMobileBrowser } from '../utils'
+import { drawPicture, elt } from '../utils'
 
-export const SCALE = isMobileBrowser() ? 10 : 15
+export const SCALE = 15
 
 export class PictureCanvas {
   constructor(picture, pointerDown) {
