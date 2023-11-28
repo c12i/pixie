@@ -6,7 +6,7 @@ export class UndoButton {
       'button',
       {
         onclick: () => dispatch({ undo: true }),
-        disabled: state.done.length < 1,
+        disabled: state.done.length <= 1,
       },
       '⤴ Undo'
     )
