@@ -3,10 +3,10 @@ import { drawPicture, elt } from '../utils'
 export const SCALE = 15
 
 export class PictureCanvas {
-  constructor(picture, pointerDown) {
+  constructor(picture, onPointerDown) {
     this.dom = elt('canvas', {
-      onmousedown: (event) => this.mouse(event, pointerDown),
-      ontouchstart: (event) => this.touch(event, pointerDown),
+      onmousedown: (event) => this._mouse(event, onPointerDown),
+      ontouchstart: (event) => this._touch(event, onPointerDown),
     })
     this.syncState(picture)
   }
@@ -17,50 +17,53 @@ export class PictureCanvas {
     drawPicture(this.picture, this.dom, SCALE)
   }
 
-  mouse(downEvent, onDown) {
+  _mouse(mouseDownEvent, onDown) {
     // return if not a left click
-    if (downEvent.button != 0) return
-    let pos = pointerPosition(downEvent, this.dom)
-    let onMove = onDown(pos)
+    if (mouseDownEvent.button != 0) return
+    const pos = this._pointerPosition(mouseDownEvent)
+    const onMove = onDown(pos)
     if (!onMove) return
 
     let move = (moveEvent) => {
       if (moveEvent.buttons == 0) {
         this.dom.removeEventListener('mousemove', move)
       } else {
-        let newPos = pointerPosition(moveEvent, this.dom)
+        let newPos = this._pointerPosition(moveEvent)
         if (newPos.x == pos.x && newPos.y == pos.y) return
         onMove(newPos)
       }
     }
+
     this.dom.addEventListener('mousemove', move)
   }
 
-  touch(startEvent, onDown) {
-    let pos = pointerPosition(startEvent.touches[0], this.dom)
-    let onMove = onDown(pos)
-    startEvent.preventDefault()
+  _touch(touchStartEvent, onDown) {
+    let pos = this._pointerPosition(touchStartEvent.touches[0])
+    const onMove = onDown(pos)
+    touchStartEvent.preventDefault()
     if (!onMove) return
 
     let move = (moveEvent) => {
-      let newPos = pointerPosition(moveEvent.touches[0], this.dom)
+      const newPos = this._pointerPosition(moveEvent.touches[0])
       if (newPos.x == pos.x && newPos.y == pos.y) return
       pos = newPos
       onMove(newPos)
     }
+
     let end = () => {
       this.dom.removeEventListener('touchmove', move)
       this.dom.removeEventListener('touchend', move)
     }
+
     this.dom.addEventListener('touchmove', move)
     this.dom.addEventListener('touchend', end)
   }
-}
 
-function pointerPosition(pos, domNode) {
-  let rect = domNode.getBoundingClientRect()
-  return {
-    x: Math.floor((pos.clientX - rect.left) / SCALE),
-    y: Math.floor((pos.clientY - rect.top) / SCALE),
+  _pointerPosition(pos) {
+    const rect = this.dom.getBoundingClientRect()
+    return {
+      x: Math.floor((pos.clientX - rect.left) / SCALE),
+      y: Math.floor((pos.clientY - rect.top) / SCALE),
+    }
   }
 }

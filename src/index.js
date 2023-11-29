@@ -12,7 +12,7 @@ import {
 import { Picture } from './picture'
 import { cached, getCachedState } from './utils'
 
-const INITIAL_STATE = {
+const DEFAULT_STATE = {
   tool: 'draw',
   color: '#000000',
   picture: Picture.empty(60, 30, '#f0f0f0'),
@@ -96,7 +96,7 @@ function historyUpdateState(state, action) {
 }
 
 function startPixelEditor({
-  state = getCachedState() ?? INITIAL_STATE,
+  state = getCachedState() ?? DEFAULT_STATE,
   tools = baseTools,
   controls = baseControls,
 }) {

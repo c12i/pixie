@@ -3,16 +3,14 @@ import { elt } from './utils'
 
 export class PixelEditor {
   constructor(state, config) {
-    let { tools, controls, dispatch } = config
+    const { tools, controls, dispatch } = config
     this.state = state
     this.canvas = new PictureCanvas(state.picture, (pos) => {
-      let selectedTool = tools[this.state.tool]
+      const selectedTool = tools[this.state.tool]
       // call the selected tool util in ./src/tools.js
-      let drawFunction = selectedTool(pos, this.state, dispatch)
-      if (drawFunction) {
-        // call the function returned by the selected tool
-        return (pos) => drawFunction(pos, this.state)
-      }
+      const drawFunction = selectedTool(pos, this.state, dispatch)
+      if (!drawFunction) return
+      return (pos) => drawFunction(pos, this.state)
     })
     this.controls = controls.map((Control) => new Control(state, config))
     this.dom = elt(

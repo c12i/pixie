@@ -20,10 +20,6 @@ export class ToolSelect {
     this.dom = elt('label', null, 'Tool: ', this.select)
   }
 
-  /**
-   * Sync ToolSelect state
-   * @param {*} state
-   */
   syncState(state) {
     this.select.value = state.tool
   }

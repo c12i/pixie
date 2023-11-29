@@ -14,11 +14,10 @@ export class SaveButton {
   }
 
   static save(picture) {
-    let canvas = elt('canvas')
+    const canvas = elt('canvas')
     drawPicture(picture, canvas, SCALE)
-    let link = elt('a', {
+    const link = elt('a', {
       href: canvas.toDataURL(),
-      // eslint-disable-next-line no-alert
       download: `${prompt('save file as?', 'pixel-art') ?? 'pixel-art'}.png`,
     })
     document.body.appendChild(link)
