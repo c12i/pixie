@@ -56,6 +56,10 @@ export function cached(data) {
 export function getCachedState() {
   let state = JSON.parse(localStorage.getItem('_state'))
   if (!state) return
+  // for users running older version without cached scale
+  if (!state.scale) {
+    state.scale = 20
+  }
   state.done = state.done.map(
     ({ width, height, pixels }) => new Picture(width, height, pixels)
   )
