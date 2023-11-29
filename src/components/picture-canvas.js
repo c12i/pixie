@@ -1,20 +1,19 @@
 import { drawPicture, elt } from '../utils'
 
-export const SCALE = 20
-
 export class PictureCanvas {
-  constructor(picture, onPointerDown) {
+  constructor(picture, scale, onPointerDown) {
     this.dom = elt('canvas', {
       onmousedown: (event) => this._mouse(event, onPointerDown),
       ontouchstart: (event) => this._touch(event, onPointerDown),
     })
+    this.scale = scale
     this.syncState(picture)
   }
 
   syncState(picture) {
     if (this.picture == picture) return
     this.picture = picture
-    drawPicture(this.picture, this.dom, SCALE)
+    drawPicture(this.picture, this.dom, this.scale)
   }
 
   _mouse(mouseDownEvent, onDown) {
@@ -62,8 +61,8 @@ export class PictureCanvas {
   _pointerPosition(pos) {
     const rect = this.dom.getBoundingClientRect()
     return {
-      x: Math.floor((pos.clientX - rect.left) / SCALE),
-      y: Math.floor((pos.clientY - rect.top) / SCALE),
+      x: Math.floor((pos.clientX - rect.left) / this.scale),
+      y: Math.floor((pos.clientY - rect.top) / this.scale),
     }
   }
 }

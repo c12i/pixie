@@ -5,7 +5,7 @@ export class PixelEditor {
   constructor(state, config) {
     const { tools, controls, dispatch } = config
     this.state = state
-    this.canvas = new PictureCanvas(state.picture, (pos) => {
+    this.canvas = new PictureCanvas(state.picture, state.scale, (pos) => {
       const selectedTool = tools[this.state.tool]
       // call the selected tool util in ./src/tools.js
       const drawFunction = selectedTool(pos, this.state, dispatch)
@@ -23,9 +23,7 @@ export class PixelEditor {
           flex-direction: column;
         `,
       },
-      elt('h3', {}, 'pixie'),
       this.canvas.dom,
-      elt('br'),
       elt(
         'div',
         {},

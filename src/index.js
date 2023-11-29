@@ -8,6 +8,7 @@ import {
   ResetButton,
   ToolSelect,
   ColorSelect,
+  SetScale,
 } from './components'
 import { Picture } from './picture'
 import { cached, getCachedState } from './utils'
@@ -16,10 +17,12 @@ function startPixelEditor({
   state = getCachedState() ?? DEFAULT_STATE,
   tools = baseTools,
   controls = baseControls,
+  scaleOptions = ['10', '15', '20', '25', '30'],
 }) {
   const app = new PixelEditor(state, {
     tools,
     controls,
+    scaleOptions,
     dispatch(action) {
       state = historyUpdateState(state, action)
       app.syncState(state)
@@ -30,6 +33,7 @@ function startPixelEditor({
 
 const DEFAULT_STATE = {
   tool: 'draw',
+  scale: 20,
   color: '#000000',
   picture: Picture.empty(60, 30, '#f0f0f0'),
   done: [],
@@ -48,6 +52,7 @@ const baseTools = {
 
 const baseControls = [
   ToolSelect,
+  SetScale,
   ColorSelect,
   SaveButton,
   LoadButton,
@@ -93,7 +98,7 @@ function historyUpdateState(state, action) {
   }
 
   if (action.save) {
-    SaveButton.save(state.picture)
+    SaveButton.save(state.picture, state.scale)
     return cached({ ...state })
   }
 

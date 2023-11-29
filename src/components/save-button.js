@@ -1,5 +1,4 @@
 import { drawPicture, elt } from '../utils'
-import { SCALE } from './picture-canvas'
 
 export class SaveButton {
   constructor(state, { dispatch }) {
@@ -13,9 +12,9 @@ export class SaveButton {
     )
   }
 
-  static save(picture) {
+  static save(picture, scale) {
     const canvas = elt('canvas')
-    drawPicture(picture, canvas, SCALE)
+    drawPicture(picture, canvas, scale)
     const link = elt('a', {
       href: canvas.toDataURL(),
       download: `${prompt('save file as?', 'pixel-art') ?? 'pixel-art'}.png`,
