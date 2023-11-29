@@ -12,6 +12,22 @@ import {
 import { Picture } from './picture'
 import { cached, getCachedState } from './utils'
 
+function startPixelEditor({
+  state = getCachedState() ?? DEFAULT_STATE,
+  tools = baseTools,
+  controls = baseControls,
+}) {
+  const app = new PixelEditor(state, {
+    tools,
+    controls,
+    dispatch(action) {
+      state = historyUpdateState(state, action)
+      app.syncState(state)
+    },
+  })
+  return app.dom
+}
+
 const DEFAULT_STATE = {
   tool: 'draw',
   color: '#000000',
@@ -93,22 +109,6 @@ function historyUpdateState(state, action) {
     })
   }
   return cached({ ...state, ...action })
-}
-
-function startPixelEditor({
-  state = getCachedState() ?? DEFAULT_STATE,
-  tools = baseTools,
-  controls = baseControls,
-}) {
-  const app = new PixelEditor(state, {
-    tools,
-    controls,
-    dispatch(action) {
-      state = historyUpdateState(state, action)
-      app.syncState(state)
-    },
-  })
-  return app.dom
 }
 
 console.info('Fork me on github: https://github.com/collinsmuriuki/pixie')
