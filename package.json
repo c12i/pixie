@@ -8,7 +8,7 @@
     "build": "parcel build src/index.html --public-url ./",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "deploy": "gh-pages -d dist",
+    "deploy": "gh-pages -d dist --cname pixie.collinsmuriuki.xyz",
     "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\""
   },
   "build": {
