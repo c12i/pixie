@@ -1,6 +1,6 @@
 import { drawPicture, elt } from '../utils'
 
-export const SCALE = 15
+export const SCALE = 20
 
 export class PictureCanvas {
   constructor(picture, onPointerDown) {

@@ -15,10 +15,22 @@ export class PixelEditor {
     this.controls = controls.map((Control) => new Control(state, config))
     this.dom = elt(
       'div',
-      {},
+      {
+        style: `
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+        `,
+      },
+      elt('h3', {}, 'pixie'),
       this.canvas.dom,
       elt('br'),
-      ...this.controls.reduce((a, c) => a.concat(' ', c.dom), [])
+      elt(
+        'div',
+        {},
+        ...this.controls.reduce((a, c) => a.concat(' ', c.dom), [])
+      )
     )
     const onKeyDown = (e) => {
       e.preventDefault()
